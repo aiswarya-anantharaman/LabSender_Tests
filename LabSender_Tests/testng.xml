@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Test Execution - LabSender">
+	<listeners>
+		<listener class-name="com.ls.test.testlisteners.Listeners"></listener>
+	</listeners>
+	<test thread-count="5" name="LabSender Test Cases">
+		<parameter name="webBrowser" value="CH" />
+		<parameter name="url" value="https://labsender.com/login" />
+		<parameter name="username" value="aiswarya.anantharaman@healthcareintegrations.com" />
+		<parameter name="password" value="tce9ztd!cbc5jgf8BAG" />
+		<classes>
+			<class name="com.ls.test.testcases.LoginPageTest" />
+			<class name="com.ls.test.testcases.OrderSettingsPageTest" />
+			<class name="com.ls.test.testcases.ManageProvidersPageTest" />
+			<class name="com.ls.test.testcases.ManageClientsPageTest" />
+			<class name="com.ls.test.testcases.ManageLocationsPageTest" />
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->
+<!--  -->
