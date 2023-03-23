@@ -20,6 +20,7 @@ public class ManageClientsPage extends TestBase{
 	TestUtil util = new TestUtil();
 	OrderSettingsPage orderSettings = new OrderSettingsPage();
 	LabDashboardPage labDashboard = new LabDashboardPage();
+	EditingClientPage editClient = new EditingClientPage();
 
 	private static final Logger logger = LogManager.getLogger(ManageClientsPage.class);
 
@@ -889,10 +890,9 @@ public class ManageClientsPage extends TestBase{
 		searchBox().sendKeys(clientId);
 		util.clickAfterExplicitWait(4000, "//*[contains(text(),\"Edit Client\")]");
 		//edit client name
-		WebElement clientNameBox = driver.findElement(By.xpath("//input[@id=\"client_name\" and @value='"+clientName+"']"));
-		clientNameBox.clear();
+		editClient.ec_clientNameEditBox().clear();
 		String editedClientName = "Edited " + clientName;
-		clientNameBox.sendKeys(editedClientName);
+		editClient.ec_clientNameEditBox().sendKeys(editedClientName);
 		//click update btn
 		util.clickAfterExplicitWait(4000, "//button[@type=\"submit\" and contains(text(), \"Update\")]");
 		//verify edit
@@ -909,6 +909,401 @@ public class ManageClientsPage extends TestBase{
 			logger.error("Error : Unable to edit client details.");
 		}		
 		//cleanup
+		deleteClient(clientId);
+		return status;
+	}
+	
+	public Boolean verifyPageElementsRenderedEditingClient(String clientName, String clientId) throws Exception
+	{
+		Boolean status = null;
+		Boolean editingClientPaneStatus = null;
+		Boolean providersAssignedToClientPaneStatus = null;
+		Boolean assignNewProvidersToClientPaneStatus = null;
+		Boolean addSubClientPaneStatus = null;
+		Boolean manageTestsForThisClientPaneStatus = null;
+		Boolean uploadProviderSignaturePaneStatus = null;
+		Boolean clientUsersPaneStatus = null;
+		//create new client
+		createNewClient(clientName, clientId);
+		//search client using unique client ID
+		searchBox().clear();
+		searchBox().sendKeys(clientId);
+		util.clickAfterExplicitWait(4000, "//*[contains(text(),\"Edit Client\")]");
+		//verify UI elements displayed
+		if(editClient.editingClientPane().isDisplayed() && editClient.editingClientPane().isEnabled())
+		{
+			editingClientPaneStatus = true;
+		}
+		else
+		{
+			editingClientPaneStatus = false;
+			logger.error("Error : Editing Client Pane not displayed or not enabled.");
+		}
+		if(editClient.providersAssignedToClientPane().isDisplayed() && editClient.providersAssignedToClientPane().isEnabled())
+		{
+			providersAssignedToClientPaneStatus = true;
+		}
+		else
+		{
+			providersAssignedToClientPaneStatus = false;
+			logger.error("Error : Providers Assigned to Client Pane not displayed or not enabled.");
+		}
+		if(editClient.assignNewProvidersToClientPane().isDisplayed() && editClient.assignNewProvidersToClientPane().isEnabled())
+		{
+			assignNewProvidersToClientPaneStatus = true;
+		}
+		else
+		{
+			assignNewProvidersToClientPaneStatus = false;
+			logger.error("Error : Assign New Providers to Client Pane not displayed or not enabled.");
+		}		
+		if(editClient.addSubClientPane().isDisplayed() && editClient.addSubClientPane().isEnabled())
+		{
+			addSubClientPaneStatus = true;
+		}
+		else
+		{
+			addSubClientPaneStatus = false;
+			logger.error("Error : Add SubClient Pane not displayed or not enabled.");
+		}
+		if(editClient.manageTestsForThisClientPane().isDisplayed() && editClient.manageTestsForThisClientPane().isEnabled())
+		{
+			manageTestsForThisClientPaneStatus = true;
+		}
+		else
+		{
+			manageTestsForThisClientPaneStatus = false;
+			logger.error("Error : Manage Tests For This Client Pane not displayed or not enabled.");
+		}		
+		if(editClient.uploadProviderSignaturePane().isDisplayed() && editClient.uploadProviderSignaturePane().isEnabled())
+		{
+			uploadProviderSignaturePaneStatus = true;
+		}
+		else
+		{
+			uploadProviderSignaturePaneStatus = false;
+			logger.error("Error : Upload Provider Signature Pane not displayed or not enabled.");
+		}
+		if(editClient.clientUsersPane().isDisplayed() && editClient.clientUsersPane().isEnabled())
+		{
+			clientUsersPaneStatus = true;
+		}
+		else
+		{
+			clientUsersPaneStatus = false;
+			logger.error("Error : Client Users Pane not displayed or not enabled.");
+		}
+		if(editingClientPaneStatus.equals(true) && providersAssignedToClientPaneStatus.equals(true)
+				&& assignNewProvidersToClientPaneStatus.equals(true) && addSubClientPaneStatus.equals(true)
+				&& manageTestsForThisClientPaneStatus.equals(true) && uploadProviderSignaturePaneStatus.equals(true)
+				&& clientUsersPaneStatus.equals(true))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+		}		
+		//cleanup
+		navigateToPage();
+		deleteClient(clientId);
+		return status;
+	}
+	
+	public Boolean verifyUIElementsEditingClientPane(String clientName, String clientId) throws Exception
+	{
+		Boolean status = null;
+		Boolean clientNameEditBoxStatus = null;
+		Boolean clientNumberEditBoxStatus = null;
+		Boolean defaultProviderDropdownStatus = null;
+		Boolean defaultTestDropdownStatus = null;
+		Boolean defaultSpecimenSourceDropdownStatus = null;
+		Boolean resultNotificationsCheckboxStatus = null;
+		Boolean emailAddressBoxStatus = null;
+		Boolean notificationFreqDropdownStatus = null;
+		Boolean orderingProviderCheckboxStatus = null;
+		Boolean displayInsuranceImageCheckboxStatus = null;
+		Boolean insuranceCardImageReqdCheckboxStatus = null;
+		Boolean insuranceOrDLReqdCheckboxStatus = null;
+		Boolean sendResultToProviderCheckboxStatus = null;
+		Boolean sendOrderConfirmationCheckboxStatus = null;
+		Boolean enableConsentCheckboxStatus = null;
+		Boolean brandedReportCheckboxStatus = null;
+		Boolean clientPhoneEditboxStatus = null;
+		Boolean clientEmailEditboxStatus = null;
+		Boolean clientLogoboxStatus = null;
+		Boolean updateBtnStatus = null;
+		//create new client
+		createNewClient(clientName, clientId);
+		//search client using unique client ID
+		searchBox().clear();
+		searchBox().sendKeys(clientId);
+		util.clickAfterExplicitWait(4000, "//*[contains(text(),\"Edit Client\")]");
+		//verify UI elements displayed
+		if(editClient.ec_clientNameEditBox().isDisplayed() && editClient.ec_clientNameEditBox().isEnabled())
+		{
+			clientNameEditBoxStatus = true;
+		}
+		else
+		{
+			clientNameEditBoxStatus = false;
+			logger.error("Error : Client Name edit box not displayed or not enabled.");
+		}
+		if(editClient.ec_clientNumberEditBox().isDisplayed() && editClient.ec_clientNumberEditBox().isEnabled())
+		{
+			clientNumberEditBoxStatus = true;
+		}
+		else
+		{
+			clientNumberEditBoxStatus = false;
+			logger.error("Error : Client Number edit box not displayed or not enabled.");
+		}
+		if(editClient.ec_defaultProviderDropdown().isDisplayed() && editClient.ec_defaultProviderDropdown().isEnabled())
+		{
+			defaultProviderDropdownStatus = true;
+		}
+		else
+		{
+			defaultProviderDropdownStatus = false;
+			logger.error("Error : Default/Primary Provider dropdown not displayed or not enabled.");
+		}
+		if(editClient.ec_defaultTestDropdown().isDisplayed() && editClient.ec_defaultTestDropdown().isEnabled())
+		{
+			defaultTestDropdownStatus = true;
+		}
+		else
+		{
+			defaultTestDropdownStatus = false;
+			logger.error("Error : Default Test dropdown not displayed or not enabled.");
+		}
+		if(editClient.ec_defaultSpecimenSourceDropdown().isDisplayed() && editClient.ec_defaultSpecimenSourceDropdown().isEnabled())
+		{
+			defaultSpecimenSourceDropdownStatus = true;
+		}
+		else
+		{
+			defaultSpecimenSourceDropdownStatus = false;
+			logger.error("Error : Default Specimen Source dropdown not displayed or not enabled.");
+		}
+		if(editClient.ec_resultNotificationsCheckbox().isDisplayed() && editClient.ec_resultNotificationsCheckbox().isEnabled())
+		{
+			resultNotificationsCheckboxStatus = true;
+		}
+		else
+		{
+			resultNotificationsCheckboxStatus = false;
+			logger.error("Error : Result Notifications checkbox not displayed or not enabled.");
+		}
+		if(editClient.ec_emailAddressBox().isDisplayed() && editClient.ec_emailAddressBox().isEnabled())
+		{
+			emailAddressBoxStatus = true;
+		}
+		else
+		{
+			emailAddressBoxStatus = false;
+			logger.error("Error : Email Address edit box not displayed or not enabled.");
+		}
+		if(editClient.ec_notificationFreqDropdown().isDisplayed() && editClient.ec_notificationFreqDropdown().isEnabled())
+		{
+			notificationFreqDropdownStatus = true;
+		}
+		else
+		{
+			notificationFreqDropdownStatus = false;
+			logger.error("Error : Notification frequency dropdown not displayed or not enabled.");
+		}
+		if(editClient.ec_orderingProviderCheckbox().isDisplayed() && editClient.ec_orderingProviderCheckbox().isEnabled())
+		{
+			orderingProviderCheckboxStatus = true;
+		}
+		else
+		{
+			orderingProviderCheckboxStatus = false;
+			logger.error("Error : Include Ordering Provider checkbox not displayed or not enabled.");
+		}
+		if(editClient.ec_displayInsuranceImageCheckbox().isDisplayed() && editClient.ec_displayInsuranceImageCheckbox().isEnabled())
+		{
+			displayInsuranceImageCheckboxStatus = true;
+		}
+		else
+		{
+			displayInsuranceImageCheckboxStatus = false;
+			logger.error("Error : Display Patient Insurance Card Photos on Order Requisition checkbox not displayed or not enabled.");
+		}
+		if(editClient.ec_insuranceCardImageReqdCheckbox().isDisplayed() && editClient.ec_insuranceCardImageReqdCheckbox().isEnabled())
+		{
+			insuranceCardImageReqdCheckboxStatus = true;
+		}
+		else
+		{
+			insuranceCardImageReqdCheckboxStatus = false;
+			logger.error("Error : Insurance Card Image Required checkbox not displayed or not enabled.");
+		}
+		if(editClient.ec_insuranceOrDLReqdCheckbox().isDisplayed() && editClient.ec_insuranceOrDLReqdCheckbox().isEnabled())
+		{
+			insuranceOrDLReqdCheckboxStatus = true;
+		}
+		else
+		{
+			insuranceOrDLReqdCheckboxStatus = false;
+			logger.error("Error : Insurance or Drivers ID Required checkbox not displayed or not enabled.");
+		}
+		if(editClient.ec_sendResultToProviderCheckbox().isDisplayed() && editClient.ec_sendResultToProviderCheckbox().isEnabled())
+		{
+			sendResultToProviderCheckboxStatus = true;
+		}
+		else
+		{
+			sendResultToProviderCheckboxStatus = false;
+			logger.error("Error : Send Patient Result Notification To Provider checkbox not displayed or not enabled.");
+		}
+		if(editClient.ec_sendOrderConfirmationCheckbox().isDisplayed() && editClient.ec_sendOrderConfirmationCheckbox().isEnabled())
+		{
+			sendOrderConfirmationCheckboxStatus = true;
+		}
+		else
+		{
+			sendOrderConfirmationCheckboxStatus = false;
+			logger.error("Error : Send Order Confirmation Emails checkbox not displayed or not enabled.");
+		}
+		if(editClient.ec_enableConsentCheckbox().isDisplayed() && editClient.ec_enableConsentCheckbox().isEnabled())
+		{
+			enableConsentCheckboxStatus = true;
+		}
+		else
+		{
+			enableConsentCheckboxStatus = false;
+			logger.error("Error : Enable Parent/Guardian Minor Consent checkbox not displayed or not enabled.");
+		}
+		if(editClient.ec_brandedReportCheckbox().isDisplayed() && editClient.ec_brandedReportCheckbox().isEnabled())
+		{
+			brandedReportCheckboxStatus = true;
+		}
+		else
+		{
+			brandedReportCheckboxStatus = false;
+			logger.error("Error : Brand Result Report/PDF with Client Info checkbox not displayed or not enabled.");
+		}
+		if(editClient.ec_clientPhoneEditbox().isDisplayed() && editClient.ec_clientPhoneEditbox().isEnabled())
+		{
+			clientPhoneEditboxStatus = true;
+		}
+		else
+		{
+			clientPhoneEditboxStatus = false;
+			logger.error("Error : Client Phone Number editbox not displayed or not enabled.");
+		}
+		if(editClient.ec_clientEmailEditbox().isDisplayed() && editClient.ec_clientEmailEditbox().isEnabled())
+		{
+			clientEmailEditboxStatus = true;
+		}
+		else
+		{
+			clientEmailEditboxStatus = false;
+			logger.error("Error : Client Email editbox not displayed or not enabled.");
+		}
+		if(editClient.ec_clientLogobox().isDisplayed() && editClient.ec_clientLogobox().isEnabled())
+		{
+			clientLogoboxStatus = true;
+		}
+		else
+		{
+			clientLogoboxStatus = false;
+			logger.error("Error : Client Logo box not displayed or not enabled.");
+		}
+		if(editClient.updateBtn().isDisplayed() && editClient.updateBtn().isEnabled())
+		{
+			updateBtnStatus = true;
+		}
+		else
+		{
+			updateBtnStatus = false;
+			logger.error("Error : Update btn not displayed or not enabled.");
+		}
+		if(clientNameEditBoxStatus.equals(true) && clientNumberEditBoxStatus.equals(true)
+				&& defaultProviderDropdownStatus.equals(true) && defaultTestDropdownStatus.equals(true)
+				&& defaultSpecimenSourceDropdownStatus.equals(true) && resultNotificationsCheckboxStatus.equals(true)
+				&& emailAddressBoxStatus.equals(true) && notificationFreqDropdownStatus.equals(true)
+				&& orderingProviderCheckboxStatus.equals(true) && displayInsuranceImageCheckboxStatus.equals(true)
+				&& insuranceCardImageReqdCheckboxStatus.equals(true) && insuranceOrDLReqdCheckboxStatus.equals(true)
+				&& sendResultToProviderCheckboxStatus.equals(true) && sendOrderConfirmationCheckboxStatus.equals(true)
+				&& enableConsentCheckboxStatus.equals(true) && brandedReportCheckboxStatus.equals(true)
+				&& clientPhoneEditboxStatus.equals(true) && clientEmailEditboxStatus.equals(true)
+				&& clientLogoboxStatus.equals(true) && updateBtnStatus.equals(true))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+		}		
+		//cleanup
+		navigateToPage();
+		deleteClient(clientId);
+		return status;
+	}
+	
+	public Boolean verifyUIElementsAddSubClientClientPane(String clientName, String clientId) throws Exception
+	{
+		Boolean status = null;
+		Boolean clientNameEditBoxStatus = null;
+		Boolean clientIdEditBoxStatus = null;
+		Boolean providerIDDropdownStatus = null;
+		Boolean addBtnStatus = null;
+		//create new client
+		createNewClient(clientName, clientId);
+		//search client using unique client ID
+		searchBox().clear();
+		searchBox().sendKeys(clientId);
+		util.clickAfterExplicitWait(4000, "//*[contains(text(),\"Edit Client\")]");
+		//verify UI elements displayed
+		if(editClient.asc_clientNameEditBox().isDisplayed() && editClient.asc_clientNameEditBox().isEnabled())
+		{
+			clientNameEditBoxStatus = true;
+		}
+		else
+		{
+			clientNameEditBoxStatus = false;
+			logger.error("Error : Client Name edit box not displayed or not enabled.");
+		}
+		if(editClient.asc_clientIdEditBox().isDisplayed() && editClient.asc_clientIdEditBox().isEnabled())
+		{
+			clientIdEditBoxStatus = true;
+		}
+		else
+		{
+			clientIdEditBoxStatus = false;
+			logger.error("Error : Client ID edit box not displayed or not enabled.");
+		}		
+		if(editClient.asc_providerIdDropdown().isDisplayed() && editClient.asc_providerIdDropdown().isEnabled())
+		{
+			providerIDDropdownStatus = true;
+		}
+		else
+		{
+			providerIDDropdownStatus = false;
+			logger.error("Error : Provider ID dropdown not displayed or not enabled.");
+		}
+		if(editClient.asc_addBtn().isDisplayed() && editClient.asc_addBtn().isEnabled())
+		{
+			addBtnStatus = true;
+		}
+		else
+		{
+			addBtnStatus = false;
+			logger.error("Error : Add button not displayed or not enabled.");
+		}		
+		if(clientNameEditBoxStatus.equals(true) && clientIdEditBoxStatus.equals(true)
+				&& providerIDDropdownStatus.equals(true) && addBtnStatus.equals(true))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+		}		
+		//cleanup
+		navigateToPage();
 		deleteClient(clientId);
 		return status;
 	}

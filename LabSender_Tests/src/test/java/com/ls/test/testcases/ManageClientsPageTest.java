@@ -119,14 +119,40 @@ public class ManageClientsPageTest extends TestBase{
 		Boolean status = manageClients.clickEditClient("Automated Test Client", testID);
 		Assert.assertEquals(true, status);		
 	}
-	
+		
 	@Test(priority = 11, 
+			description = "Verify page elements are rendered peoperly on the Editing Client page.")
+	public void pageElementsRenderedEditingClient() throws Exception
+	{
+		String testID = util.randomID();
+		Boolean status = manageClients.verifyPageElementsRenderedEditingClient("Automated Test Client", testID);
+		Assert.assertEquals(true, status);
+	}
+	
+	@Test(priority = 12, 
+			description = "Verify UI elements are rendered properly in Editing Client pane in Editing Client page.")
+	public void UIElementsEditingClientPane() throws Exception
+	{
+		String testID = util.randomID();
+		Boolean status = manageClients.verifyUIElementsEditingClientPane("Automated Test Client", testID);
+		Assert.assertEquals(true, status);
+	}
+	
+	@Test(priority = 13, 
 			description = "Verify client details are edited and rendered peoperly on Current Clients pane.")
 	public void editClientDetails() throws Exception
 	{
 		String testID = util.randomID();
 		Boolean status = manageClients.editClientDetails("Automated Test Client", testID);
 		Assert.assertEquals(true, status);		
+	}
+	@Test(priority = 14, 
+			description = "Verify UI elements rendered properly in Add SubClient pane in Editing Client page.")
+	public void UIElementsAddSubClientClientPane() throws Exception
+	{
+		String testID = util.randomID();
+		Boolean status = manageClients.verifyUIElementsAddSubClientClientPane("Automated Test Client", testID);
+		Assert.assertEquals(true, status);
 	}
 	
 	@Test(priority = 17, 

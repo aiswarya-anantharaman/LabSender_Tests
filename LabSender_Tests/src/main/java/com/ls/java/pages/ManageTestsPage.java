@@ -22,7 +22,8 @@ public class ManageTestsPage extends TestBase{
 	LabDashboardPage labDashboard = new LabDashboardPage();
 	EditTestPage editTest = new EditTestPage();
 	SpecimenSourceManagementPage specimenSrc = new SpecimenSourceManagementPage();
-
+	TestQuestionsPage questions = new TestQuestionsPage();
+	
 	private static final Logger logger = LogManager.getLogger(ManageTestsPage.class);
 
 	public ManageTestsPage()
@@ -143,6 +144,16 @@ public class ManageTestsPage extends TestBase{
 			element = driver.findElement(By.xpath("//*[@id=\"user-table_paginate\"]"));					
 		} catch (Exception e) {			
 			logger.error("Error : Pagination for tests table not found in tests pane.");
+		}
+		return element;	
+	}
+	
+	public WebElement questionsBtn() throws Exception
+	{
+		try {
+			element = driver.findElement(By.xpath("//a[contains(@href, '/questions')]"));					
+		} catch (Exception e) {			
+			logger.error("Error : Questions button for table entry not found in tests table.");
 		}
 		return element;	
 	}
@@ -574,7 +585,7 @@ public class ManageTestsPage extends TestBase{
 	public Boolean emptyRecords() throws Exception
 	{
 		Boolean isEmpty = false;
-		WebElement emptyRecords = driver.findElement(By.xpath("//td[contains(text(), \"No matching records found\")]"));
+		WebElement emptyRecords = driver.findElement(By.xpath("//td[@class='dataTables_empty']"));
 		if(emptyRecords.isDisplayed())
 		{
 			isEmpty = true;
@@ -1246,7 +1257,788 @@ public class ManageTestsPage extends TestBase{
       		status = false;
       		logger.error("Error : options missing in show entries dropdown in Current Specimen Sources pane.");
       	}
+		//cleanup
+		navigateToPage();
 		return status;
 	}
 	
+	public Boolean searchSpecimenSource(String testname, String source) throws Exception
+	{
+		Boolean status = true;
+		//search specimen source using testname
+		specimenSrc.searchBox().clear();
+		specimenSrc.searchBox().sendKeys(testname);
+		WebElement ssTable = driver.findElement(By.xpath("//*[@id=\"user-table\"]/tbody"));
+		List<WebElement> ssTableRows = ssTable.findElements(By.tagName("tr"));
+		int rows = ssTableRows.size();
+		for(int i=1; i<=rows; i++)
+		{
+			String testEntry = driver.findElement(By.xpath("//*[@id=\"user-table\"]/tbody/tr["+i+"]/td[1]")).getText();
+			String ssEntry = driver.findElement(By.xpath("//*[@id=\"user-table\"]/tbody/tr["+i+"]/td[2]")).getText();
+			System.out.println(testEntry);
+			System.out.println(ssEntry);
+			if(!testEntry.equals(testname) && !ssEntry.equals(source))
+			{
+				status = false;
+				break;
+			}
+		}
+		return status;
+	}
+	
+	public Boolean verifySearchSpecimenSource(String testname, String testcode, String dxcode, String source) throws Exception
+	{
+		Boolean status = null;
+		Boolean validSearch = true;
+		Boolean invalidSearch = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//navigate to manage specimen sources page
+		util.clickAfterExplicitWait(4000, "//*[@href='/lab/specimensource/index']");
+		//create new specimen source
+		createSpecimenSource(testname, source);
+		//verify valid string search
+		if(searchSpecimenSource(testname, source).equals(true))
+		{
+			validSearch = true;
+		}
+		else
+		{
+			validSearch = false;
+			logger.error("Error : Search functionality not working for valid search string.");
+		}
+		//verify invalid string search
+		//search specimen source using testname
+		specimenSrc.searchBox().clear();
+		specimenSrc.searchBox().sendKeys("error");
+		if(emptyRecords())
+		{
+			invalidSearch = true;
+		}
+		else
+		{
+			invalidSearch = false;
+			logger.error("Error : Search functionality not working for invalid search string.");
+		}
+		if(invalidSearch.equals(true) && validSearch.equals(true))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+		}
+		//cleanup
+		deleteSpecimenSource(testname);
+		Thread.sleep(2000);
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean clickReturnToTestSettingBtn() throws Exception
+	{
+		Boolean status = null;
+		//navigate to manage specimen sources page
+		util.clickAfterExplicitWait(4000, "//*[@href='/lab/specimensource/index']");
+		specimenSrc.returnToTestSettingsBtn().click();
+		if(util.getPageUrl().contains(util.manageTestsPageUrl))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+			logger.error("Error : Unable to navigate to Manage Tests page on clicking Return to Test Settings button.");
+		}
+		//cleanup
+		navigateToPage();
+		return status;
+	}
+	
+	public Boolean clickQuestionsBtn(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//verify user navigates to questions page
+		if(util.getPageUrl().contains("/questions") && questions.questionsPageTitle().isDisplayed())
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+			logger.error("Error : Unable to navigate to Questions page on clicking Questions button.");
+		}
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean verifyPageElementsRenderedQuestions(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		Boolean addQuestionBtnStatus = null;
+		Boolean returnToTestBtnStatus = null;
+		Boolean questionTableStatus = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//verify UI elements
+		if(questions.addQuestionBtn().isDisplayed() && questions.addQuestionBtn().isEnabled())
+		{
+			addQuestionBtnStatus = true;
+		}
+		else
+		{
+			addQuestionBtnStatus = false;
+			logger.error("Error : Add Question button not displayed or not enabled.");
+		}
+		if(questions.returnToTestBtn().isDisplayed() && questions.returnToTestBtn().isEnabled())
+		{
+			returnToTestBtnStatus = true;
+		}
+		else
+		{
+			returnToTestBtnStatus = false;
+			logger.error("Error : Return to Test button not displayed or not enabled.");
+		}
+		if(questions.questionsTable().isDisplayed() && questions.questionsTable().isEnabled())
+		{
+			questionTableStatus = true;
+		}
+		else
+		{
+			questionTableStatus = false;
+			logger.error("Error : Questions table not displayed or not enabled.");
+		}
+		if(addQuestionBtnStatus.equals(true) && returnToTestBtnStatus.equals(true)
+				&& questionTableStatus.equals(true))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+		}	
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean clickReturnToTestBtn(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//click return to test btn
+		questions.returnToTestBtn().click();
+		//verify user navigates to questions page
+		if(util.getPageUrl().contains(util.manageTestsPageUrl))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+			logger.error("Error : Unable to navigate to Manage Tests page on clicking Return to Test button.");
+		}
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean clickAddQuestionBtn(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//click add qn btn
+		questions.addQuestionBtn().click();
+		//verify user navigates to new question page
+		if(util.getPageUrl().contains("/questions/new"))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+			logger.error("Error : Unable to navigate to new question page on clicking add question button.");
+		}
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean verifyPageElementsRenderedNewQuestion(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		Boolean questionEditboxStatus = null;
+		Boolean typeDropdownStatus = null;
+		Boolean saveBtnStatus = null;
+		Boolean backToQuestionsBtnStatus = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//click add questions btn in questions page
+		questions.addQuestionBtn().click();
+		//verify UI elements
+		if(questions.questionEditbox().isDisplayed() && questions.questionEditbox().isEnabled())
+		{
+			questionEditboxStatus = true;
+		}
+		else
+		{
+			questionEditboxStatus = false;
+			logger.error("Error : Question edit box not displayed or not enabled.");
+		}
+		if(questions.questionTypeDropdown().isDisplayed() && questions.questionTypeDropdown().isEnabled())
+		{
+			typeDropdownStatus = true;
+		}
+		else
+		{
+			typeDropdownStatus = false;
+			logger.error("Error : Type dropdown not displayed or not enabled.");
+		}
+		if(questions.saveBtn().isDisplayed() && questions.saveBtn().isEnabled())
+		{
+			saveBtnStatus = true;
+		}
+		else
+		{
+			saveBtnStatus = false;
+			logger.error("Error : Save btn not displayed or not enabled.");
+		}
+		if(questions.backToQuestionsBtn().isDisplayed() && questions.backToQuestionsBtn().isEnabled())
+		{
+			backToQuestionsBtnStatus = true;
+		}
+		else
+		{
+			backToQuestionsBtnStatus = false;
+			logger.error("Error : Back To Questions btn not displayed or not enabled.");
+		}
+		if(questionEditboxStatus.equals(true) && typeDropdownStatus.equals(true)
+				&& saveBtnStatus.equals(true) && backToQuestionsBtnStatus.equals(true))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+		}	
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean typeDropdownOptionsNewQuestion(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//click add questions btn in questions page
+		questions.addQuestionBtn().click();		
+		ArrayList<String> options = new ArrayList<String>();
+		ArrayList<String> exp_options = new ArrayList<String>();
+		exp_options.add("text");
+		exp_options.add("multi-line text");
+		exp_options.add("single-choice");
+		exp_options.add("multi-choice");
+		exp_options.add("date");
+		Select dropdown = new Select(questions.questionTypeDropdown());		
+		List <WebElement> option = dropdown.getOptions();	      
+      	for(int i =0; i<option.size() ; i++)
+      	{
+	         options.add(option.get(i).getText());
+        }
+      	if(options.equals(exp_options))
+      	{
+      		status = true;
+      	}
+      	else
+      	{
+      		status = false;
+      		logger.error("Error : options missing in type dropdown in new questions page.");
+      	}
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean clickBackToQuestionsBtn(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//click add qn btn
+		questions.addQuestionBtn().click();
+		//click back to qns btn
+		questions.backToQuestionsBtn().click();
+		//verify user navigates to questions page
+		if(util.getPageUrl().contains("/questions"))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+			logger.error("Error : Unable to navigate to questions page on clicking back to question button.");
+		}
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean verifyCreateQuestionsForTest(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//add questions of types - text, multi line text, date
+		ArrayList<String> qns = new ArrayList<String>();
+		qns.add("Auto Question 1");
+		qns.add("Auto Question 2");
+		qns.add("Auto Question 3");
+		ArrayList<String> types = new ArrayList<String>();
+		types.add("text");
+		types.add("multi-line text");
+		types.add("date");
+		addNewQuestion(qns.get(0), types.get(0));
+		addNewQuestion(qns.get(1), types.get(1));
+		addNewQuestion(qns.get(2), types.get(2));
+		//get questions and types added to questions table
+		ArrayList<String> exp_qns = new ArrayList<String>();
+		ArrayList<String> exp_types = new ArrayList<String>();
+		WebElement qnsTable = driver.findElement(By.xpath("//*[@id=\"content\"]/..//table/tbody"));
+		List<WebElement> qnsTableRows = qnsTable.findElements(By.tagName("tr"));
+		int rows = qnsTableRows.size();
+		for(int i=1; i<=rows; i++)
+		{
+			String qnEntered = driver.findElement(By.xpath("//*[@id=\"content\"]/..//table/tbody/tr["+i+"]/td[1]")).getText();
+			exp_qns.add(qnEntered);
+			String typeEntered = driver.findElement(By.xpath("//*[@id=\"content\"]/..//table/tbody/tr["+i+"]/td[2]")).getText();
+			exp_types.add(typeEntered);
+		}
+		//verify questions added properly
+		if(qns.equals(exp_qns) && types.equals(exp_types))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+			logger.error("Error : User unable to create questions for test.");
+		}		
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public void addNewQuestion(String question, String type) throws Exception
+	{
+		//click add qn btn
+		questions.addQuestionBtn().click();
+		//enter question
+		questions.questionEditbox().clear();
+		questions.questionEditbox().sendKeys(question);
+		//choose question type
+		util.selectByVisibleTextFromDropdown(type, questions.questionTypeDropdown());
+		//click save btn
+		questions.saveBtn().click();
+	}
+	
+	public Boolean clickEditBtnForQuestion(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//add qn
+		addNewQuestion("Auto Question", "text");
+		//click edit qn btn
+		driver.findElement(By.xpath("//*[contains(text(), \"Edit\")]")).click();
+		WebElement pageHeading = driver.findElement(By.xpath("//h1[contains(text(), 'Update a Question')]"));
+		//verify user navigates to update question page
+		if(pageHeading.isDisplayed())
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+			logger.error("Error : Unable to navigate to update question page on clicking edit button against question.");
+		}
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean verifyPageElementsRenderedUpdateQuestion(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		Boolean questionEditboxStatus = null;
+		Boolean typeDropdownStatus = null;
+		Boolean updateBtnStatus = null;
+		Boolean backToQuestionsBtnStatus = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//add qn
+		addNewQuestion("Auto Question", "text");
+		//click edit qn btn
+		driver.findElement(By.xpath("//*[contains(text(), \"Edit\")]")).click();
+		//verify UI elements
+		if(questions.questionEditbox().isDisplayed() && questions.questionEditbox().isEnabled())
+		{
+			questionEditboxStatus = true;
+		}
+		else
+		{
+			questionEditboxStatus = false;
+			logger.error("Error : Question edit box not displayed or not enabled.");
+		}
+		if(questions.questionTypeDropdown().isDisplayed() && questions.questionTypeDropdown().isEnabled())
+		{
+			typeDropdownStatus = true;
+		}
+		else
+		{
+			typeDropdownStatus = false;
+			logger.error("Error : Type dropdown not displayed or not enabled.");
+		}
+		if(questions.updateBtn().isDisplayed() && questions.updateBtn().isEnabled())
+		{
+			updateBtnStatus = true;
+		}
+		else
+		{
+			updateBtnStatus = false;
+			logger.error("Error : Update btn not displayed or not enabled.");
+		}
+		if(questions.backToQuestionsBtn().isDisplayed() && questions.backToQuestionsBtn().isEnabled())
+		{
+			backToQuestionsBtnStatus = true;
+		}
+		else
+		{
+			backToQuestionsBtnStatus = false;
+			logger.error("Error : Back To Questions btn not displayed or not enabled.");
+		}
+		if(questionEditboxStatus.equals(true) && typeDropdownStatus.equals(true)
+				&& updateBtnStatus.equals(true) && backToQuestionsBtnStatus.equals(true))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+		}	
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean editQuestion(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//add qn
+		addNewQuestion("Auto Question", "text");
+		//click edit qn btn
+		driver.findElement(By.xpath("//*[contains(text(), \"Edit\")]")).click();
+		//edit qn and type
+		questions.questionEditbox().clear();
+		questions.questionEditbox().sendKeys("Edited Auto Question");
+		util.selectByVisibleTextFromDropdown("date", questions.questionTypeDropdown());
+		questions.updateBtn().click();
+		//verify changes are updated
+		String qnEntered = driver.findElement(By.xpath("//*[@id=\"content\"]/..//table/tbody/tr/td[1]")).getText();
+		String typeEntered = driver.findElement(By.xpath("//*[@id=\"content\"]/..//table/tbody/tr/td[2]")).getText();
+		if(qnEntered.equals("Edited Auto Question") && typeEntered.equals("date"))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+			logger.error("Error : User unable to edit question associated with test.");
+		}
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean verifyDeleteQuestion(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		Boolean alertDisplayed = null;
+		Boolean clickCancel = null;
+		Boolean clickOk = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//add qn
+		addNewQuestion("Auto Question", "text");
+		//click delete btn
+		driver.findElement(By.xpath("//*[contains(text(), \"Delete\")]")).click();		
+		Alert alert = driver.switchTo().alert();
+		String str_alert = alert.getText();
+		String exp_alert = "Are you sure you wish to delete this question?";
+		if(str_alert.equals(exp_alert))
+		{
+			alertDisplayed = true;
+		}
+		else
+		{
+			alertDisplayed = false;
+			logger.error("Error : Alert not displayed on clicking delete button against question.");
+		}
+		//dismiss alert
+		alert.dismiss();
+		//verify question retained
+		String qnEntered = driver.findElement(By.xpath("//*[@id=\"content\"]/..//table/tbody/tr/td[1]")).getText();
+		if(qnEntered.equals("Auto Question"))
+		{
+			clickCancel = true;
+		}
+		else
+		{
+			clickCancel = false;
+			logger.error("Error : Question not retained on delete question alert dismissal.");
+		}
+		//click delete btn
+		driver.findElement(By.xpath("//*[contains(text(), \"Delete\")]")).click();		
+		//accept alert
+		Alert alert1 = driver.switchTo().alert();
+		alert1.accept();
+		//verify question deleted
+		List<WebElement> emptyQnTable = driver.findElements(By.xpath("//*[@id=\"content\"]/..//table/tbody/tr"));
+		if(emptyQnTable.size()==0)
+		{
+			clickOk = true;
+		}
+		else
+		{
+			clickOk = false;
+			logger.error("Error : Record not deleted on accepting delete question alert.");
+		}		
+		if(alertDisplayed.equals(true) && clickCancel.equals(true) && clickOk.equals(true))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+		}
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean verifyChoicePaneDisplayedForQuestion(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		Boolean paneDisplayedForSingleChoice = null;
+		Boolean paneDisplayedForMultipleChoice = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//add single choice qn
+		questions.addQuestionBtn().click();
+		//enter question
+		questions.questionEditbox().clear();
+		questions.questionEditbox().sendKeys("Auto Question");
+		//choose question type
+		util.selectByVisibleTextFromDropdown("single-choice", questions.questionTypeDropdown());
+		//verify choices pane displayed
+		if(questions.choicesPane().isDisplayed())
+		{
+			paneDisplayedForSingleChoice = true;
+		}
+		else
+		{
+			paneDisplayedForSingleChoice = false;
+			logger.error("Error : Choice pane not displayed for single-choice question.");
+		}
+		questions.backToQuestionsBtn().click();
+		//add multi choice qn
+		questions.addQuestionBtn().click();
+		//enter question
+		questions.questionEditbox().clear();
+		questions.questionEditbox().sendKeys("Auto Question");
+		//choose question type
+		util.selectByVisibleTextFromDropdown("multi-choice", questions.questionTypeDropdown());
+		//verify choices pane displayed
+		if(questions.choicesPane().isDisplayed())
+		{
+			paneDisplayedForMultipleChoice = true;
+		}
+		else
+		{
+			paneDisplayedForMultipleChoice = false;
+			logger.error("Error : Choice pane not displayed for multi-choice question.");
+		}
+		if(paneDisplayedForSingleChoice.equals(true)
+				&& paneDisplayedForMultipleChoice.equals(true))
+		{
+			status = true;
+		}
+		else
+		{
+			status=false;
+		}	
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
+	
+	public Boolean verifyUIElementsChoicesPane(String testname, String testcode, String dxcode) throws Exception
+	{
+		Boolean status = null;
+		Boolean UIElementsDisplayedSingleChoice = null;
+		Boolean UIElementsDisplayedMultiChoice = null;
+		//create new test
+		createTest(testname, testcode, dxcode);
+		//search test
+		searchBox().clear();
+		searchBox().sendKeys(testcode);
+		//click questions btn
+		questionsBtn().click();
+		//add single choice qn
+		questions.addQuestionBtn().click();
+		//enter question
+		questions.questionEditbox().clear();
+		questions.questionEditbox().sendKeys("Auto Question");
+		//choose question type
+		util.selectByVisibleTextFromDropdown("single-choice", questions.questionTypeDropdown());
+		//verify choices pane UI Elements displayed
+		if(questions.optionsTextBoxChoicesPane().isDisplayed()
+				&& questions.addBtnChoicesPane().isDisplayed()
+				&& questions.addSubQnLinkChoicesPane().isDisplayed())
+		{
+			questions.addBtnChoicesPane().click();
+			if(questions.removeBtnChoicesPane().isDisplayed())
+			{
+				UIElementsDisplayedSingleChoice = true;
+			}
+		}
+		else
+		{
+			UIElementsDisplayedSingleChoice = false;
+			logger.error("Error : Choice pane UI elements not displayed for single-choice question.");
+		}
+		questions.backToQuestionsBtn().click();
+		//add multi choice qn
+		questions.addQuestionBtn().click();
+		//enter question
+		questions.questionEditbox().clear();
+		questions.questionEditbox().sendKeys("Auto Question");
+		//choose question type
+		util.selectByVisibleTextFromDropdown("multi-choice", questions.questionTypeDropdown());
+		//verify choices pane displayed
+		if(questions.optionsTextBoxChoicesPane().isDisplayed()
+				&& questions.addBtnChoicesPane().isDisplayed()
+				&& questions.addSubQnLinkChoicesPane().isDisplayed())
+		{
+			questions.addBtnChoicesPane().click();
+			if(questions.removeBtnChoicesPane().isDisplayed())
+			{
+				UIElementsDisplayedMultiChoice = true;
+			}
+		}
+		else
+		{
+			UIElementsDisplayedMultiChoice = false;
+			logger.error("Error : Choice pane UI elements not displayed for multi-choice question.");
+		}
+		if(UIElementsDisplayedSingleChoice.equals(true)
+				&& UIElementsDisplayedMultiChoice.equals(true))
+		{
+			status = true;
+		}
+		else
+		{
+			status=false;
+		}	
+		//cleanup
+		navigateToPage();
+		deleteTest(testcode);
+		return status;
+	}
 }
