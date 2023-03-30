@@ -177,4 +177,16 @@ public class TestQuestionsPage extends TestBase{
 		}
 		return element;	
 	}
+	
+	//sub question pane
+	public WebElement subQuestionPane() throws Exception
+	{
+		try {
+			element = driver.findElement(By.xpath("//div[@id='sub-questions']"));					
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("Error : Sub question pane not found.");
+		}
+		return element;	
+	}
 }

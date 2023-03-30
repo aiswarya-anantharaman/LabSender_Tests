@@ -1,10 +1,13 @@
 package com.ls.java.base;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -25,12 +28,22 @@ public class TestBase {
 	public static void initialization(String url)
 	{
 		String projectPath = System.getProperty("user.dir");
+		String downloadFilepath = projectPath + "downloads";
 		System.out.println(projectPath);
 		System.setProperty("webdriver.chrome.driver", projectPath + "/src/main/resources/Drivers/chromedriver.exe");
+		
 		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--remote-allow-origins=*");
+		options.addArguments("--start-maximized");
+		options.addArguments("disable-popup-blocking");
+		
+		Map<String, Object> prefs = new HashMap<String, Object>();
+		prefs.put("credentials_enable_service", false);
+		prefs.put("profile.password_manager_enabled", false);
+		prefs.put("autofill.profile_enabled", false);
+		prefs.put("download.default_directory", downloadFilepath);
+		options.setExperimentalOption("prefs", prefs);
+
 		driver = new ChromeDriver(options);
-		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));

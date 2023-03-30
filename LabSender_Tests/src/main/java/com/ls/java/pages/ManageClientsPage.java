@@ -676,6 +676,20 @@ public class ManageClientsPage extends TestBase{
 		logger.info("New client created : " + clientName + "," + clientId);		
 	}
 	
+	public void createNewClient(String clientName, String clientId, String provider) throws Exception
+	{
+		//create new client
+		clientNameEditbox().clear();
+		clientNameEditbox().sendKeys(clientName);
+		clientIdEditbox().clear();
+		clientIdEditbox().sendKeys(clientId);
+		//select provider
+		util.selectByVisibleTextFromDropdown(provider, defaultProviderDropdown());
+		//click submit btn
+		util.clickAfterExplicitWait(4000, "//button[@type=\"submit\"]");
+		logger.info("New client created : " + clientName + "," + clientId);		
+	}
+	
 	public void deleteClient(String clientId) throws Exception
 	{
 		//search client using unique client Id

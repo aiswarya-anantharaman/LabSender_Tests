@@ -146,6 +146,7 @@ public class ManageClientsPageTest extends TestBase{
 		Boolean status = manageClients.editClientDetails("Automated Test Client", testID);
 		Assert.assertEquals(true, status);		
 	}
+
 	@Test(priority = 14, 
 			description = "Verify UI elements rendered properly in Add SubClient pane in Editing Client page.")
 	public void UIElementsAddSubClientClientPane() throws Exception

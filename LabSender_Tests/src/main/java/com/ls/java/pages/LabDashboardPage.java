@@ -43,4 +43,24 @@ public class LabDashboardPage extends TestBase{
 		}
 		return element;	
 	}
+	
+	public WebElement newOrderSideNav() throws Exception
+	{
+		try {
+			element = driver.findElement(By.xpath("//*[@href=\"/lab/order\"]"));					
+		} catch (Exception e) {
+			logger.error("Error : Unable to locate New Order under order button in side nav.");
+		}
+		return element;	
+	}
+	
+	public WebElement viewOrdersSideNav() throws Exception
+	{
+		try {
+			element = driver.findElement(By.xpath("//*[@href=\"/lab/orders\"]"));					
+		} catch (Exception e) {
+			logger.error("Error : Unable to locate View Orders under order button in side nav.");
+		}
+		return element;	
+	}
 }

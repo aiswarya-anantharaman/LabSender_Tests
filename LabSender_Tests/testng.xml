@@ -16,6 +16,8 @@
 			<class name="com.ls.test.testcases.ManageClientsPageTest" />
 			<class name="com.ls.test.testcases.ManageLocationsPageTest" />
 			<class name="com.ls.test.testcases.ManageTestsPageTest" />
+			<class name="com.ls.test.testcases.NewOrderPageTest" />
+			<class name="com.ls.test.testcases.ViewOrdersPageTest" />
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

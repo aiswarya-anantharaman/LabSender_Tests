@@ -28,6 +28,35 @@ public class TestUtil extends TestBase{
 	public final String editingLocationPageUrl = "labsender.com/lab/locations";
 	public final String editTestPageUrl = "labsender.com/lab/test/";
 	public final String specimenSourceMgmtUrl = "labsender.com/lab/specimensource/index";
+	public final String orderSummaryPageUrl = "labsender.com/lab/order_summary/";
+	public final String newOrderPageUrl = "labsender.com/lab/order";
+	public final String viewOrdersPageUrl = "labsender.com/lab/orders";
+	
+	//constants
+	public final String providerFirstName = "Automated";
+	public final String providerLastName = "AutoProvider";
+	public final String providerNPI = "9999999999";
+	public final String providerId = "99";
+	public final String clientName = "Automated Client";
+	public final String clientId = "Auto";
+	public final String locationName = "Automated Location";
+	public final String testName = "Automated Test";
+	public final String testId = "Auto";
+	public final String dxCode = "Auto";
+	public final String patientLastname = "Automated";
+	public final String patientFirstname = "AutoPatient";
+	public final String patientDOB = "01/01/2023";
+	public final String patientAddress = "AutoAddress";
+	public final String patientCity = "AutoCity";
+	public final String patientState = "Alaska";
+	public final String patientZipCode = "99999";
+	public final String patientEmail = "automation@gmail.com";
+	public final String patientMobile = "9999999999";
+	public final String patientSex = "Male";
+	public final String patientRace = "Prefers not to share";
+	public final String patientEthnicity = "Prefers not to share";
+	public final String abnormal = "Abnormal";
+	public final String paymentMode = "Self Pay";
 	
 	Random random = new Random();  
 	
