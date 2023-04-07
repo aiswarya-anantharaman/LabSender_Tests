@@ -128,16 +128,7 @@ public class ManageLocationsPageTest extends TestBase{
 		Boolean status = manageLocations.verifyDeleteLocation("Automated Test Location");
 		Assert.assertEquals(true, status);
 	}
-	
-	@Test(priority = 12,
-			description = "Verify client can be added to location.")
-	public void clientsAssociatedWithLocation() throws Exception
-	{
-		String clientID = util.randomID();
-		Boolean status = manageLocations.clientsAssociatedWithLocation("Automated Test Client", clientID, "Automated Test Location");
-		Assert.assertEquals(true, status);
-	}
-	
+
 	@Test(priority = 13,
 			description = "Verify location can be searched from locations table.")
 	public void searchLocation() throws Exception

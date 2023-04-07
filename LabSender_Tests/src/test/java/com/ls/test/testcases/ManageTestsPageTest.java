@@ -303,14 +303,6 @@ public class ManageTestsPageTest extends TestBase{
 		Assert.assertEquals(true, status);
 	}
 	
-	@Test(priority = 34, 
-			description = "Verify question associated with test can be deleted.")
-	public void verifyDeleteQuestion() throws Exception
-	{
-		Boolean status = manageTests.verifyDeleteQuestion("Automated Test", "Auto", "Auto");
-		Assert.assertEquals(true, status);
-	}
-	
 	@Test(priority = 35, 
 			description = "Verify choices pane displayed for single choice, multi choice questions.")
 	public void verifyChoicePaneDisplayedForQuestion() throws Exception

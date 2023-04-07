@@ -469,7 +469,8 @@ public class ManageProvidersPage extends TestBase{
 		providerLastNameBox().sendKeys(lname);
 		providerFirstNameBox().clear();
 		providerFirstNameBox().sendKeys(fname);
-		createBtn().click();
+		//click create btn
+		util.clickAfterExplicitWait(4000, "//button[@type='submit']");
 		logger.info("Provider with NPI " + testNPI + " created.");
 	}
 	
