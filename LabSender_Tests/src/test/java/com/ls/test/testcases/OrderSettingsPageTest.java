@@ -30,7 +30,11 @@ public class OrderSettingsPageTest extends TestBase{
 		login = new LoginPage();
 		orderSettings = new OrderSettingsPage();
 		login.userLogin(username, password);
-		adminDashboard.labViewCard().click();
+		//switch to lab view - lab user
+		if(adminDashboard.pageTitle().isDisplayed())
+		{
+			adminDashboard.labViewCard().click();
+		}
 		orderSettings.navigateToPage();
 	}
 	

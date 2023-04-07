@@ -63,4 +63,14 @@ public class LabDashboardPage extends TestBase{
 		}
 		return element;	
 	}
+	
+	public WebElement managePatientsBtnSideNav() throws Exception
+	{
+		try {
+			element = driver.findElement(By.xpath("//*[@href=\"/lab/patients\"]"));					
+		} catch (Exception e) {
+			logger.error("Error : Unable to locate Manage Patients in side nav.");
+		}
+		return element;	
+	}
 }

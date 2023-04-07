@@ -33,7 +33,11 @@ public class ViewOrdersPageTest extends TestBase{
 		adminDashboard = new AdminDashboardPage();
 		viewOrders = new ViewOrdersPage();
 		login.userLogin(username, password);
-		adminDashboard.labViewCard().click();
+		//switch to lab view - lab user
+		if(adminDashboard.pageTitle().isDisplayed())
+		{
+			adminDashboard.labViewCard().click();
+		}
 		viewOrders.navigateToPage();
 	}
 	
@@ -55,7 +59,7 @@ public class ViewOrdersPageTest extends TestBase{
 	
 	@Test(priority = 3, 
 			description = "Verify page elements are rendered peoperly on the View Orders page.")
-	public void pageElementsRenderedManageTests() throws Exception
+	public void pageElementsRenderedViewOrders() throws Exception
 	{
 		Boolean status = viewOrders.verifyPageElementsRendered();
 		Assert.assertEquals(true, status);

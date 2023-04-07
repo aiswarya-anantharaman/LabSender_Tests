@@ -681,7 +681,7 @@ public class ManageProvidersPage extends TestBase{
 		String newNPI = util.randomNPI();
 		providerEdit.providerNPI().clear();
 		providerEdit.providerNPI().sendKeys(newNPI);
-		Thread.sleep(2000);
+		util.sleep(2000);
 		//click submit btn
 		util.clickAfterExplicitWait(4000, "//input[@value=\"Submit\"]");
 		//search provider using unique NPI
@@ -734,7 +734,7 @@ public class ManageProvidersPage extends TestBase{
 		navigateToPage();
 		searchBox().clear();
 		searchBox().sendKeys(testNPI);
-		Thread.sleep(2000);
+		util.sleep(2000);
 		String NPI = driver.findElement(By.xpath("//*[@id=\"patient-table\"]/tbody/tr/td[2]")).getText();
 		if(NPI.equals(testNPI))
 		{
@@ -800,7 +800,7 @@ public class ManageProvidersPage extends TestBase{
 		//accept alert
 		Alert alert = driver.switchTo().alert();
 		alert.accept();
-		Thread.sleep(2000);
+		util.sleep(2000);
 		logger.info("Provider with NPI " + testNPI + " deleted.");
 	}
 	

@@ -33,7 +33,11 @@ public class NewOrderPageTest  extends TestBase{
 		adminDashboard = new AdminDashboardPage();
 		newOrder = new NewOrderPage();
 		login.userLogin(username, password);
-		adminDashboard.labViewCard().click();
+		//switch to lab view - lab user
+		if(adminDashboard.pageTitle().isDisplayed())
+		{
+			adminDashboard.labViewCard().click();
+		}
 		newOrder.navigateToPage();
 	}
 	

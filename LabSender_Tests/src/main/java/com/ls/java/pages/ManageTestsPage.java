@@ -585,8 +585,8 @@ public class ManageTestsPage extends TestBase{
 	public Boolean emptyRecords() throws Exception
 	{
 		Boolean isEmpty = false;
-		WebElement emptyRecords = driver.findElement(By.xpath("//td[@class='dataTables_empty']"));
-		if(emptyRecords.isDisplayed())
+		List<WebElement> empty = driver.findElements(By.xpath("//td[@class='dataTables_empty']"));
+		if(empty.size()!=0)
 		{
 			isEmpty = true;
 		}
@@ -603,7 +603,7 @@ public class ManageTestsPage extends TestBase{
 		//accept alert
 		Alert alert = driver.switchTo().alert();
 		alert.accept();
-		Thread.sleep(2000);
+		util.sleep(2000);
 		logger.info("Test with test code " + testcode + " deleted.");
 	}
 	
@@ -638,7 +638,7 @@ public class ManageTestsPage extends TestBase{
 		//verify record retained on tests table
 		searchBox().clear();
 		searchBox().sendKeys(testcode);
-		Thread.sleep(2000);
+		util.sleep(2000);
 		String testCodeEntry = driver.findElement(By.xpath("//*[@id=\"user-table\"]/tbody/tr/td[2]")).getText();
 		if(testCodeEntry.equals(testcode))
 		{
@@ -1134,9 +1134,9 @@ public class ManageTestsPage extends TestBase{
 			logger.error("Error : Unable to create new specimen source.");
 		}	
 		//cleanup
-		Thread.sleep(2000);
+		util.sleep(2000);
 		deleteSpecimenSource(testname);
-		Thread.sleep(2000);
+		util.sleep(2000);
 		navigateToPage();
 		deleteTest(testcode);
 		return status;
@@ -1330,7 +1330,7 @@ public class ManageTestsPage extends TestBase{
 		}
 		//cleanup
 		deleteSpecimenSource(testname);
-		Thread.sleep(2000);
+		util.sleep(2000);
 		navigateToPage();
 		deleteTest(testcode);
 		return status;
@@ -1992,8 +1992,11 @@ public class ManageTestsPage extends TestBase{
 				&& questions.addBtnChoicesPane().isDisplayed()
 				&& questions.addSubQnLinkChoicesPane().isDisplayed())
 		{
+			//click add btn in choices pane to display remove btn
 			questions.addBtnChoicesPane().click();
-			if(questions.removeBtnChoicesPane().isDisplayed())
+			//click add sub qn link to display sub qn pane
+			questions.addSubQnLinkChoicesPane().click();
+			if(questions.removeBtnChoicesPane().isDisplayed() && questions.subQuestionPane().isDisplayed())
 			{
 				UIElementsDisplayedSingleChoice = true;
 			}
@@ -2016,8 +2019,11 @@ public class ManageTestsPage extends TestBase{
 				&& questions.addBtnChoicesPane().isDisplayed()
 				&& questions.addSubQnLinkChoicesPane().isDisplayed())
 		{
+			//click add btn in choices pane to display remove btn
 			questions.addBtnChoicesPane().click();
-			if(questions.removeBtnChoicesPane().isDisplayed())
+			//click add sub qn link to display sub qn pane
+			questions.addSubQnLinkChoicesPane().click();
+			if(questions.removeBtnChoicesPane().isDisplayed() && questions.subQuestionPane().isDisplayed())
 			{
 				UIElementsDisplayedMultiChoice = true;
 			}
