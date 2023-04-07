@@ -22,6 +22,7 @@
 			<class name="com.ls.test.testcases.ManageTestsPageTest" />
 			<class name="com.ls.test.testcases.NewOrderPageTest" />
 			<class name="com.ls.test.testcases.ViewOrdersPageTest" />
+			<class name="com.ls.test.testcases.ManagePatientsPageTest" />
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->
