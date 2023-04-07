@@ -14,8 +14,8 @@ import com.ls.java.base.TestBase;
 
 public class TestUtil extends TestBase{
 
-	public static long PAGE_LOAD_TIMEOUT = 20;
-	public static long IMPLICIT_WAIT = 20;
+	public static long PAGE_LOAD_TIMEOUT = 2000;
+	public static long IMPLICIT_WAIT = 2000;
 	
 	//urls
 	public final String orderSettingsPageUrl = "labsender.com/lab/order_settings";
@@ -31,6 +31,8 @@ public class TestUtil extends TestBase{
 	public final String orderSummaryPageUrl = "labsender.com/lab/order_summary/";
 	public final String newOrderPageUrl = "labsender.com/lab/order";
 	public final String viewOrdersPageUrl = "labsender.com/lab/orders";
+	public final String managePatientsPageUrl = "labsender.com/lab/patients";
+	
 	
 	//constants
 	public final String providerFirstName = "Automated";
@@ -43,8 +45,8 @@ public class TestUtil extends TestBase{
 	public final String testName = "Automated Test";
 	public final String testId = "Auto";
 	public final String dxCode = "Auto";
-	public final String patientLastname = "Automated";
-	public final String patientFirstname = "AutoPatient";
+	public final String patientLastname = "AutoPatientLName";
+	public final String patientFirstname = "AutoPatientFName";
 	public final String patientDOB = "01/01/2023";
 	public final String patientAddress = "AutoAddress";
 	public final String patientCity = "AutoCity";
@@ -57,6 +59,8 @@ public class TestUtil extends TestBase{
 	public final String patientEthnicity = "Prefers not to share";
 	public final String abnormal = "Abnormal";
 	public final String paymentMode = "Self Pay";
+	public final String specimenSource = "AutoSource";
+	public final String patientId = "99";
 	
 	Random random = new Random();  
 	
@@ -100,4 +104,10 @@ public class TestUtil extends TestBase{
 		int random_no = (int) (Math.random()*(max-min+1)+min);
 		return random_no;
 	}
+	
+	public void sleep(long duration) throws Exception
+	{		
+		Thread.sleep(duration);
+	}
+	
 }

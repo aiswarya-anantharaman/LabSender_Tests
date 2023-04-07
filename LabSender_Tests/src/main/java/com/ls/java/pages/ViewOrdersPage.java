@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
@@ -133,6 +134,7 @@ public class ViewOrdersPage extends TestBase{
 	public Boolean verifyPageUrl() throws Exception
 	{
 		Boolean status = null;
+		navigateToPage();
 		if(util.getPageUrl().contains(util.viewOrdersPageUrl))
 		{
 			status = true;
@@ -148,6 +150,7 @@ public class ViewOrdersPage extends TestBase{
 	public Boolean verifyPageTitle() throws Exception
 	{
 		Boolean status = null;
+		navigateToPage();
 		String currentPageTitle = pageTitle().getText();
 		if(currentPageTitle.contains(viewOrdersPageTitle()))
 		{
@@ -172,6 +175,7 @@ public class ViewOrdersPage extends TestBase{
 		Boolean orderToDateStatus = null;
 		Boolean filterByClientDropdownStatus = null;
 		Boolean paginationStatus = null;
+		navigateToPage();
 		if(showEntriesDropdown().isDisplayed() && showEntriesDropdown().isEnabled())
 		{
 			showEntriesDropdownStatus = true;
@@ -263,6 +267,7 @@ public class ViewOrdersPage extends TestBase{
 	public Boolean verifyShowEntriesDropdownOptions() throws Exception
 	{
 		Boolean status = null;
+		navigateToPage();
 		ArrayList<String> options = new ArrayList<String>();
 		ArrayList<String> exp_options = new ArrayList<String>();
 		exp_options.add("10");

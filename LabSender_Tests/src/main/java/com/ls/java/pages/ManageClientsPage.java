@@ -700,7 +700,7 @@ public class ManageClientsPage extends TestBase{
 		//accept alert
 		Alert alert = driver.switchTo().alert();
 		alert.accept();
-		Thread.sleep(2000);
+		util.sleep(2000);
 		logger.info("Client with Client ID " + clientId + " deleted.");
 	}
 	
@@ -830,7 +830,7 @@ public class ManageClientsPage extends TestBase{
 		alert.dismiss();
 		searchBox().clear();
 		searchBox().sendKeys(clientId);
-		Thread.sleep(2000);
+		util.sleep(2000);
 		String Id = driver.findElement(By.xpath("//*[@id=\"table\"]/tbody/tr[1]/td[2]")).getText();
 		if(Id.equals(clientId))
 		{
@@ -925,6 +925,20 @@ public class ManageClientsPage extends TestBase{
 		//cleanup
 		deleteClient(clientId);
 		return status;
+	}
+	
+	public void editClientDetails(String clientId, String provider, String testName) throws Exception
+	{
+		//search client using unique client ID
+		searchBox().clear();
+		searchBox().sendKeys(clientId);
+		util.clickAfterExplicitWait(4000, "//*[contains(text(),\"Edit Client\")]");
+		//edit client details - add default provider and test
+		util.selectByVisibleTextFromDropdown(provider, editClient.ec_defaultProviderDropdown());
+		util.selectByVisibleTextFromDropdown(testName, editClient.ec_defaultTestDropdown());		
+		//click update btn
+		util.clickAfterExplicitWait(4000, "//button[@type=\"submit\" and contains(text(), \"Update\")]");
+		logger.info("Client details updated for " + clientId + " - added default provider and default test");
 	}
 	
 	public Boolean verifyPageElementsRenderedEditingClient(String clientName, String clientId) throws Exception

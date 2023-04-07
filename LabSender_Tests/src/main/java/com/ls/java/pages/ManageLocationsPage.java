@@ -503,6 +503,18 @@ public class ManageLocationsPage extends TestBase{
 		logger.info("New location created : " + location);		
 	}
 	
+	public void createNewLocation(String location, String clientName) throws Exception
+	{
+		//create new location
+		locationNameEditbox().clear();
+		locationNameEditbox().sendKeys(location);
+		//select client from dropdown
+		util.selectByVisibleTextFromDropdown(clientName, clientNameDropdown());
+		//click submit btn
+		util.clickAfterExplicitWait(4000, "//button[@type=\"submit\"]");
+		logger.info("New location created : " + location);		
+	}
+	
 	public void deleteLocation(String location) throws Exception
 	{
 		//search location
@@ -513,7 +525,7 @@ public class ManageLocationsPage extends TestBase{
 		//accept alert
 		Alert alert = driver.switchTo().alert();
 		alert.accept();
-		Thread.sleep(2000);
+		util.sleep(2000);
 		logger.info("Location " + location + " deleted.");
 	}
 	
@@ -665,7 +677,7 @@ public class ManageLocationsPage extends TestBase{
 		//select client to add
 		Select dropdown = new Select(editLocation.clientDropdown());		
 		dropdown.selectByVisibleText(clientName);
-		Thread.sleep(2000);
+		util.sleep(2000);
 		//click submit btn in editing location page
 		util.clickAfterExplicitWait(4000, "//button[@type=\"submit\" and contains(text(), \"SUBMIT\")]");
 		List<WebElement> assoClients = driver.findElements(By.xpath("//td[contains(text(), '"+clientName+"')]"));
@@ -743,7 +755,7 @@ public class ManageLocationsPage extends TestBase{
 		//verify record retained on current locations table
 		searchBox().clear();
 		searchBox().sendKeys(location);
-		Thread.sleep(2000);
+		util.sleep(2000);
 		String locationEntry = driver.findElement(By.xpath("//*[@id=\"table\"]/tbody/tr/td[1]")).getText();
 		if(locationEntry.equals(location))
 		{

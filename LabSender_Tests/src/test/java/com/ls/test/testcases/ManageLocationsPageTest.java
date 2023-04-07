@@ -33,7 +33,11 @@ public class ManageLocationsPageTest extends TestBase{
 		manageLocations = new ManageLocationsPage();
 		adminDashboard = new AdminDashboardPage();
 		login.userLogin(username, password);
-		adminDashboard.labViewCard().click();
+		//switch to lab view - lab user
+		if(adminDashboard.pageTitle().isDisplayed())
+		{
+			adminDashboard.labViewCard().click();
+		}
 		manageLocations.navigateToPage();			
 	}
 	

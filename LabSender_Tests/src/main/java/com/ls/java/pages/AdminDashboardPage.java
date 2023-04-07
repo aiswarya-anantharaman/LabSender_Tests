@@ -34,4 +34,15 @@ public class AdminDashboardPage extends TestBase{
 		String pageUrl = "labsender.com/admin/dashboard";
 		return pageUrl;
 	}
+	
+	public WebElement pageTitle() throws Exception
+	{
+		try {
+			element = driver.findElement(By.xpath("//h1[contains(text(), \"Admin Dashboard\")]"));
+					
+		} catch (Exception e) {
+			logger.error("Error : Incorrect page.");
+		}
+		return element;	
+	}
 }

@@ -32,7 +32,11 @@ public class ManageClientsPageTest extends TestBase{
 		login = new LoginPage();
 		manageClients = new ManageClientsPage();
 		login.userLogin(username, password);
-		adminDashboard.labViewCard().click();
+		//switch to lab view - lab user
+		if(adminDashboard.pageTitle().isDisplayed())
+		{
+			adminDashboard.labViewCard().click();
+		}
 		manageClients.navigateToPage();			
 	}
 	
