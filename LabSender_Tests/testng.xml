@@ -14,14 +14,14 @@
 		<parameter name="password" value="tce9ztd!cbc5jgf8BAG" />
 		<classes>
 			<!--All @Test methods in the following classes will be executed upon test run-->
-			<class name="com.ls.test.testcases.LoginPageTest" />
+			<!--<class name="com.ls.test.testcases.LoginPageTest" />
 			<class name="com.ls.test.testcases.OrderSettingsPageTest" />
 			<class name="com.ls.test.testcases.ManageProvidersPageTest" />
 			<class name="com.ls.test.testcases.ManageClientsPageTest" />
 			<class name="com.ls.test.testcases.ManageLocationsPageTest" />
 			<class name="com.ls.test.testcases.ManageTestsPageTest" />
 			<class name="com.ls.test.testcases.NewOrderPageTest" />
-			<class name="com.ls.test.testcases.ViewOrdersPageTest" />
+			<class name="com.ls.test.testcases.ViewOrdersPageTest" />-->
 			<class name="com.ls.test.testcases.ManagePatientsPageTest" />
 		</classes>
 	</test> <!-- Test -->

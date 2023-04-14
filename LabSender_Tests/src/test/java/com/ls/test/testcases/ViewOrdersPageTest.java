@@ -73,6 +73,32 @@ public class ViewOrdersPageTest extends TestBase{
 		Assert.assertEquals(true, status);
 	}
 	
+	@Test(priority = 5, 
+			description = "Verify orders can be filtered using from and to dates in Orders table."
+			)
+	public void filterOrdersUsingDates() throws Exception
+	{
+		Boolean status = viewOrders.verifyFilterOrdersUsingDates();
+		Assert.assertEquals(true, status);
+	}
+	
+	@Test(priority = 6, 
+			description = "Verify orders table is empty for invalid order from and order to dates."
+			)
+	public void filterOrdersUsingInvalidDates() throws Exception
+	{
+		Boolean status = viewOrders.verifyfilterOrdersUsingInvalidDates();
+		Assert.assertEquals(true, status);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@AfterClass
 	public void tearDown()
 	{

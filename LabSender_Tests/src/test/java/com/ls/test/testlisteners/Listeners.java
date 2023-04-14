@@ -11,6 +11,9 @@ import com.ls.java.util.ExtentSetup;
 
 public class Listeners extends TestBase implements ITestListener{
 
+	String projectPath = System.getProperty("user.dir");
+	String screenshotsFolder = projectPath + "/test-output/Screenshots/";
+	
 	public Listeners() {
 
 	}
@@ -35,6 +38,8 @@ public class Listeners extends TestBase implements ITestListener{
 		System.out.println("Test failed : " + result.getName());
 		extentTest.log(testStatus(result), "Test failed : " + result.getMethod().getMethodName());
 		extentTest.log(testStatus(result),result.getThrowable().getMessage());
+		screenshot(result.getName());
+		extentTest.addScreenCaptureFromPath(screenshotsFolder + "testName" + ".png");
 	}
 	
 	public void onTestSkipped(ITestResult result) {
@@ -42,6 +47,8 @@ public class Listeners extends TestBase implements ITestListener{
 		extentTest.log(testStatus(result), "Test skipped : " + result.getMethod().getMethodName());
 		extentTest.log(testStatus(result), result.getSkipCausedBy().toString());
 		extentTest.log(testStatus(result), result.getThrowable().getMessage());
+		screenshot(result.getName());
+		extentTest.addScreenCaptureFromPath(screenshotsFolder + "testName" + ".png");
 	}
 	
 	public void onFinish(ITestContext context) {

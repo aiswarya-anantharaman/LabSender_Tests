@@ -1,6 +1,9 @@
 package com.ls.java.util;
 
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 import org.openqa.selenium.By;
@@ -35,6 +38,9 @@ public class TestUtil extends TestBase{
 	
 	
 	//constants
+	
+	String projectPath = System.getProperty("user.dir");
+	
 	public final String providerFirstName = "Automated";
 	public final String providerLastName = "AutoProvider";
 	public final String providerNPI = "9999999999";
@@ -61,6 +67,12 @@ public class TestUtil extends TestBase{
 	public final String paymentMode = "Self Pay";
 	public final String specimenSource = "AutoSource";
 	public final String patientId = "99";
+	public final String patientDLNumber = "999999";
+	public final String patientIdCardPath = projectPath + "/src/main/resources/TestData/patientID.png";
+	public final String patientDLPath = projectPath + "/src/main/resources/TestData/patientDL.png";
+	public final String patientResultsPath = projectPath + "/src/main/resources/TestData/patientResults.pdf";
+	public final String patientDocumentPath = projectPath + "/src/main/resources/TestData/patientDocument.jpg";
+	
 	
 	Random random = new Random();  
 	
@@ -81,6 +93,13 @@ public class TestUtil extends TestBase{
 	{
 		Select dropdown = new Select(element);		
 		dropdown.selectByVisibleText(text);
+	}
+	
+	public int getOptionSelectedInDropdown(WebElement element) throws Exception
+	{
+		Select dropdown = new Select(element);		
+		String option = dropdown.getFirstSelectedOption().getText();
+		return Integer.parseInt(option);
 	}
 	
 	public String randomNPI()
@@ -105,9 +124,41 @@ public class TestUtil extends TestBase{
 		return random_no;
 	}
 	
+	public Date getCurrentDate() throws Exception
+	{
+		Date currentDate = Calendar.getInstance().getTime();		
+		return currentDate;		
+	}
+	
+	public Date setDate(int noOfDays) throws Exception
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_YEAR, noOfDays);
+		Date pastDate = calendar.getTime();		
+		return pastDate;		
+	}
+	
+	public String str_formattedDate(Date date, String pattern) throws Exception
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);	
+		String formattedDate = sdf.format(date);
+		return formattedDate;
+	}
+	
+	public Date convertDateToString(String str_date, String pattern) throws Exception
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		return sdf.parse(str_date);
+	}
+	
 	public void sleep(long duration) throws Exception
 	{		
 		Thread.sleep(duration);
 	}
 	
+	public void jsRemoveReadOnlyAttribute(WebElement element) throws Exception
+	{
+		((JavascriptExecutor)driver).executeScript("arguments[0].removeAttribute('readonly')", element);
+	}
+
 }

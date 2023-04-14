@@ -309,6 +309,7 @@ public class ManageClientsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page title: " + currentPageTitle);
 			logger.error("Error : Unable to verify manage clients page title.");
 		}
 		return status;
@@ -588,6 +589,7 @@ public class ManageClientsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + util.getPageUrl());
 			logger.error("Error : Unable to navigate to Order Settings page on clicking Return to Order Settings button.");
 		}
 		return status;
@@ -720,7 +722,8 @@ public class ManageClientsPage extends TestBase{
 		else
 		{
 			status = false;
-			logger.error("Error : Unable to create new client.");
+      		logger.error("Client Id entered: " + idTableEntry);
+      		logger.error("Error : Unable to create new client.");
 		}
 		//cleanup
 		deleteClient(clientId);
@@ -885,7 +888,8 @@ public class ManageClientsPage extends TestBase{
 		else
 		{
 			status = false;
-			logger.error("Error : Unable to navigate to Editing Client page on clicking Edit Client button.");
+			logger.error("Current page URL: " + util.getPageUrl());
+      		logger.error("Error : Unable to navigate to Editing Client page on clicking Edit Client button.");
 		}	
 		//navigating from editing client to manage clients page
 		navigateToPage();

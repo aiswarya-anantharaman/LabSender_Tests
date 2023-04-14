@@ -7,6 +7,9 @@ import com.ls.java.base.TestBase;
 
 public class ExtentSetup extends TestBase{
 
+	static String projectPath = System.getProperty("user.dir");
+	static String logFile = projectPath + "/Test_logs.log";
+	
 	public static ExtentReports setupExtentReport()
 	{
 		//create a new file in the path specified after each test execution
@@ -17,7 +20,8 @@ public class ExtentSetup extends TestBase{
 		extent.attachReporter(sparkReport);
 		sparkReport.config().setDocumentTitle("Test Execution - LabSender");
 		sparkReport.config().setTheme(Theme.STANDARD);
-		sparkReport.config().setReportName("AUTOMATED TEST EXECUTION - LABSENDER");
+		sparkReport.config().setReportName("AUTOMATED TEST EXECUTION - LABSENDER   " + 
+										   "<a href=" + logFile + " class=\"text-primary\" >CLICK HERE TO VIEW LOG FILE</a>");
 		return extent;
 	}
 

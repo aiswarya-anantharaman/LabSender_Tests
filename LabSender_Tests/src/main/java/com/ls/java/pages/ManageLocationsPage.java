@@ -209,7 +209,8 @@ public class ManageLocationsPage extends TestBase{
 		else
 		{
 			status = false;
-			logger.info("Error : Unable to verify manage locations page title.");
+			logger.error("Current page title: " + currentPageTitle);
+      		logger.info("Error : Unable to verify manage locations page title.");
 		}
 		return status;
 	}
@@ -454,7 +455,8 @@ public class ManageLocationsPage extends TestBase{
 		else
 		{
 			status = false;
-			logger.error("Error : Unable to navigate to Order Settings page on clicking Return to Order Settings button.");
+			logger.error("Current page URL: " + util.getPageUrl());
+      		logger.error("Error : Unable to navigate to Order Settings page on clicking Return to Order Settings button.");
 		}
 		return status;
 	}
@@ -486,7 +488,8 @@ public class ManageLocationsPage extends TestBase{
 		else
 		{
 			status = false;
-			logger.error("Error : Unable to create new location.");
+			logger.error("Location entered: " + locTableEntry);
+      		logger.error("Error : Unable to create new location.");
 		}		
 		//cleanup
 		deleteLocation(location);
@@ -546,7 +549,8 @@ public class ManageLocationsPage extends TestBase{
 		else
 		{
 			status = false;
-			logger.error("Error : Unable to navigate to Editing Location page on clicking Edit Location button.");
+			logger.error("Current page URL: " + util.getPageUrl());
+      		logger.error("Error : Unable to navigate to Editing Location page on clicking Edit Location button.");
 		}	
 		//navigating from editing location to manage locations page
 		navigateToPage();
@@ -583,6 +587,7 @@ public class ManageLocationsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Location entered: " + locTableEntry);
 			logger.error("Error : Unable to edit location details.");
 		}	
 		//cleanup

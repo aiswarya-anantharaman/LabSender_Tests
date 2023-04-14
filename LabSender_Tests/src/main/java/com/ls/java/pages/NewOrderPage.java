@@ -461,7 +461,8 @@ public class NewOrderPage extends TestBase{
 		else
 		{
 			status = false;
-			logger.info("Error : Unable to verify new order page title.");
+			logger.error("Current page title: " + currentPageTitle);
+			logger.error("Error : Unable to verify new order page title.");
 		}
 		return status;
 	}
@@ -476,7 +477,8 @@ public class NewOrderPage extends TestBase{
 		else
 		{
 			status = false;
-			logger.info("Error : Unable to verify new order page URL.");
+			logger.error("Current page URL: " + util.getPageUrl());
+			logger.error("Error : Unable to verify new order page URL.");
 		}
 		return status;
 	}

@@ -10,7 +10,6 @@ import com.ls.java.base.TestBase;
 import com.ls.java.pages.AdminDashboardPage;
 import com.ls.java.pages.LoginPage;
 import com.ls.java.pages.ManagePatientsPage;
-import com.ls.java.pages.ViewOrdersPage;
 import com.ls.java.util.TestUtil;
 
 public class ManagePatientsPageTest extends TestBase{
@@ -59,7 +58,7 @@ public class ManagePatientsPageTest extends TestBase{
 	}
 
 	@Test(priority = 3, 
-			description = "Verify page elements are rendered peoperly on the Manage Patients page.")
+			description = "Verify page elements are rendered properly on the Manage Patients page.")
 	public void verifyPageElementsRenderedManagePatients() throws Exception
 	{
 		Boolean status = managePatients.pageElementsRenderedManagePatients();
@@ -67,7 +66,7 @@ public class ManagePatientsPageTest extends TestBase{
 	}
 	
 	@Test(priority = 4, 
-			description = "Verify page elements are rendered peoperly on the Patients pane.")
+			description = "Verify page elements are rendered properly on the Patients pane.")
 	public void verifyUIElementsRenderedPatientsPane() throws Exception
 	{
 		Boolean status = managePatients.verifyUIElementsRenderedPatientsPane();
@@ -75,7 +74,7 @@ public class ManagePatientsPageTest extends TestBase{
 	}
 	
 	@Test(priority = 5, 
-			description = "Verify page elements are rendered peoperly on the Create Patient pane.")
+			description = "Verify page elements are rendered properly on the Create Patient pane.")
 	public void verifyUIElementsRenderedCreatePatientPane() throws Exception
 	{
 		Boolean status = managePatients.verifyUIElementsRenderedCreatePatientPane();
@@ -89,6 +88,45 @@ public class ManagePatientsPageTest extends TestBase{
 		Boolean status = managePatients.verifyShowEntriesDropdownOptions();
 		Assert.assertEquals(true, status);
 	}
+	
+	@Test(priority = 7, 
+			description = "Verify new patient can be created.",
+			enabled = false)
+	public void verifyCreateNewPatient() throws Exception
+	{
+		Boolean status = managePatients.verifyCreateNewPatient();
+		Assert.assertEquals(true, status);
+	}
+	
+	@Test(priority = 8, 
+			description = "Verify user is navigated to New Order page on clicking New Order button in patients table.",
+			enabled = false)
+	public void verifyNewOrderBtnClick() throws Exception
+	{
+		Boolean status = managePatients.verifyNewOrderBtnClick();
+		Assert.assertEquals(true, status);
+	}
+	
+	@Test(priority = 9, 
+			description = "Verify user is navigated to Editing Patient page on clicking Editing Patient button in patients table.",
+			enabled = false)
+	public void verifyEditingPatientBtnClick() throws Exception
+	{
+		Boolean status = managePatients.verifyEditingPatientBtnClick();
+		Assert.assertEquals(true, status);
+	}
+	
+	@Test(priority = 10, 
+			description = "Verify patients registered within the date range are displayed on filtering using Registered from and Registered to dates.")
+	public void filterPatientRegistrationUsingDates() throws Exception
+	{
+		Boolean status = managePatients.verifyFilterPatientRegistrationUsingDates();
+		Assert.assertEquals(true, status);
+	}
+	
+	
+	
+	
 	
 	@AfterClass
 	public void tearDown()

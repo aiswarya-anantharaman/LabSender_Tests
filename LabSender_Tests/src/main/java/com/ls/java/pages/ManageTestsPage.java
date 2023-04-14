@@ -249,7 +249,8 @@ public class ManageTestsPage extends TestBase{
 		else
 		{
 			status = false;
-			logger.info("Error : Unable to verify manage tests page title.");
+			logger.error("Current page title: " + currentPageTitle);			
+			logger.error("Error : Unable to verify manage tests page title.");
 		}
 		return status;
 	}
@@ -524,6 +525,7 @@ public class ManageTestsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + util.getPageUrl());			
 			logger.error("Error : Unable to navigate to Order Settings page on clicking Return to Order Settings button.");
 		}
 		return status;
@@ -541,6 +543,7 @@ public class ManageTestsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + util.getPageUrl());			
 			logger.error("Error : Unable to navigate to Manage Panels page on clicking Panel Management button.");
 		}
 		return status;
@@ -756,6 +759,8 @@ public class ManageTestsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + util.getPageUrl());			
+			logger.error("Error : User could not navigate to edit test page.");			
 		}
 		//navigate back to manage tests page
 		navigateToPage();
@@ -882,6 +887,7 @@ public class ManageTestsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Test name entered: " + testNameEntry);			
 			logger.error("Error : Unable to edit test.");
 		}	
 		//cleanup
@@ -933,6 +939,7 @@ public class ManageTestsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + util.getPageUrl());
 			logger.error("Error : Unable to navigate to Manage Specimen Sources page.");
 		}	
 		//cleanup
@@ -1349,6 +1356,7 @@ public class ManageTestsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + util.getPageUrl());
 			logger.error("Error : Unable to navigate to Manage Tests page on clicking Return to Test Settings button.");
 		}
 		//cleanup
@@ -1374,6 +1382,7 @@ public class ManageTestsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + util.getPageUrl());
 			logger.error("Error : Unable to navigate to Questions page on clicking Questions button.");
 		}
 		//cleanup
@@ -1458,6 +1467,7 @@ public class ManageTestsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + util.getPageUrl());
 			logger.error("Error : Unable to navigate to Manage Tests page on clicking Return to Test button.");
 		}
 		//cleanup
@@ -1486,6 +1496,7 @@ public class ManageTestsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + util.getPageUrl());
 			logger.error("Error : Unable to navigate to new question page on clicking add question button.");
 		}
 		//cleanup
@@ -1624,6 +1635,7 @@ public class ManageTestsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + util.getPageUrl());
 			logger.error("Error : Unable to navigate to questions page on clicking back to question button.");
 		}
 		//cleanup
@@ -1848,7 +1860,8 @@ public class ManageTestsPage extends TestBase{
 		//click questions btn
 		questionsBtn().click();
 		//add qn
-		addNewQuestion("Auto Question", "text");
+		addNewQuestion("1 Auto Question", "text");
+		addNewQuestion("2 Auto Question", "text");
 		//click delete btn
 		driver.findElement(By.xpath("//*[contains(text(), \"Delete\")]")).click();		
 		Alert alert = driver.switchTo().alert();
@@ -1867,7 +1880,7 @@ public class ManageTestsPage extends TestBase{
 		alert.dismiss();
 		//verify question retained
 		String qnEntered = driver.findElement(By.xpath("//*[@id=\"content\"]/..//table/tbody/tr/td[1]")).getText();
-		if(qnEntered.equals("Auto Question"))
+		if(qnEntered.equals("1 Auto Question"))
 		{
 			clickCancel = true;
 		}
@@ -1877,13 +1890,14 @@ public class ManageTestsPage extends TestBase{
 			logger.error("Error : Question not retained on delete question alert dismissal.");
 		}
 		//click delete btn
-		driver.findElement(By.xpath("//*[contains(text(), \"Delete\")]")).click();		
+		driver.findElement(By.xpath("//table/tbody/tr[1]//*[contains(text(), \"Delete\")]")).click();		
 		//accept alert
 		Alert alert1 = driver.switchTo().alert();
 		alert1.accept();
+		util.sleep(2000);
 		//verify question deleted
-		List<WebElement> emptyQnTable = driver.findElements(By.xpath("//*[@id=\"content\"]/..//table/tbody/tr"));
-		if(emptyQnTable.size()==0)
+		String qnEntered1 = driver.findElement(By.xpath("//*[@id=\"content\"]/..//table/tbody/tr/td[1]")).getText();
+		if(qnEntered1.equals("2 Auto Question"))
 		{
 			clickOk = true;
 		}
@@ -1901,6 +1915,7 @@ public class ManageTestsPage extends TestBase{
 			status = false;
 		}
 		//cleanup
+		util.clickAfterExplicitWait(4000, "//a[@href='/lab/tests']");
 		navigateToPage();
 		deleteTest(testcode);
 		return status;

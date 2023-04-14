@@ -1,7 +1,10 @@
 package com.ls.java.pages;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -305,6 +308,26 @@ public class ManagePatientsPage extends TestBase{
 		return element;	
 	}
 	
+	public WebElement editPatientBtn() throws Exception
+	{
+		try {
+			element = driver.findElement(By.xpath("//a[contains(text(), \"Edit Patient\")]"));					
+		} catch (Exception e) {			
+			logger.error("Error : Edit Patient button not found for the patient in patients table.");
+		}
+		return element;	
+	}
+	
+	public WebElement newOrderBtn() throws Exception
+	{
+		try {
+			element = driver.findElement(By.xpath("//a[contains(text(), \"New Order\")]"));					
+		} catch (Exception e) {			
+			logger.error("Error : New Order button not found for the patient in patients table.");
+		}
+		return element;	
+	}
+	
 	public void navigateToPage() throws Exception
 	{
 		labDashboard.managePatientsBtnSideNav().click();
@@ -322,7 +345,8 @@ public class ManagePatientsPage extends TestBase{
 		else
 		{
 			status = false;
-			logger.info("Error : Unable to verify Manage Patients page URL.");
+			logger.error("Current page URL: " + util.getPageUrl());
+			logger.error("Error : Unable to verify Manage Patients page URL.");
 		}
 		return status;
 	}
@@ -339,7 +363,8 @@ public class ManagePatientsPage extends TestBase{
 		else
 		{
 			status = false;
-			logger.info("Error : Unable to verify Manage Patients page title.");
+			logger.error("Current page title: " + currentPageTitle);
+			logger.error("Error : Unable to verify Manage Patients page title.");
 		}
 		return status;
 	}
@@ -455,14 +480,21 @@ public class ManagePatientsPage extends TestBase{
 			filterByLocationDropdownStatus = false;
 			logger.error("Error : Filter By Location dropdown not displayed or not enabled.");
 		}
-		if(pagination().isDisplayed() && pagination().isEnabled())
+		if(shouldPaginationBeDisplayed())
 		{
-			paginationStatus = true;
+			if(pagination().isDisplayed() && pagination().isEnabled())
+			{
+				paginationStatus = true;
+			}
+			else
+			{
+				paginationStatus = false;
+				logger.error("Error : pagination for patients table not displayed or not enabled.");
+			}
 		}
 		else
 		{
-			paginationStatus = false;
-			logger.error("Error : pagination for current clients table not displayed or not enabled.");
+			paginationStatus = true;
 		}
 		if(showEntriesDropdownStatus.equals(true) && searchBoxStatus.equals(true)
 				&& patientsTableStatus.equals(true) && advancedFilteringBtnStatus.equals(true)
@@ -476,6 +508,21 @@ public class ManagePatientsPage extends TestBase{
 			status = false;
 		}		
 		return status;
+	}
+	
+	public Boolean shouldPaginationBeDisplayed() throws Exception
+	{
+		Boolean paginationBeDisplayed = null;
+		List<WebElement> patientsTableRows = driver.findElements(By.xpath("//table[@id=\"patient-table\"]/tbody/tr"));
+		if(patientsTableRows.size() < util.getOptionSelectedInDropdown(showEntriesDropdown()))
+		{
+			paginationBeDisplayed = false;
+		}
+		else
+		{
+			paginationBeDisplayed = true;
+		}
+		return paginationBeDisplayed;
 	}
 	
 	public Boolean verifyUIElementsRenderedCreatePatientPane() throws Exception
@@ -687,5 +734,231 @@ public class ManagePatientsPage extends TestBase{
 		return status;
 	}
 	
-}
+	public void createNewPatient(String patientId, String lastname, String firstname,
+								 String phone, String email, String dob, String address,
+								 String city, String state, String zip, String patientDLNumber,
+								 String client) throws Exception
+	{
+		//fill out patient details
+		patientId().sendKeys(patientId);
+		patientLastName().sendKeys(lastname);
+		patientFirstName().sendKeys(firstname);
+		patientPhone().sendKeys(phone);
+		patientEmail().sendKeys(email);
+		patientDOB().sendKeys(dob);
+		patientAddress().sendKeys(address);
+		patientCity().sendKeys(city);
+		util.selectByVisibleTextFromDropdown(state, patientState());
+		patientZip().sendKeys(zip);
+		patientDLNumber().sendKeys(patientDLNumber);
+		patientIdCard().sendKeys(util.patientIdCardPath);
+		patientResultsFile().sendKeys(util.patientResultsPath);
+		util.selectByVisibleTextFromDropdown(client, clientDropdown());
+		//click create btn
+		util.clickAfterExplicitWait(4000, "//button[@type='submit']");
+		util.sleep(3000);
+		logger.info("Patient " + firstname + ", " + lastname + " created.");
+	}
 	
+	public Boolean searchPatient(String searchString) throws Exception
+	{
+		Boolean status = true;
+		//search patient
+		searchBox().clear();
+		searchBox().sendKeys(searchString);
+		util.sleep(3000);
+		WebElement patientsTable = driver.findElement(By.xpath("//*[@id=\"patient-table\"]/tbody"));
+		List<WebElement> patientsTableRows = patientsTable.findElements(By.tagName("tr"));
+		int rows = patientsTableRows.size();
+		for(int i=1; i<=rows; i++)
+		{
+			String lastName = driver.findElement(By.xpath("//*[@id=\"patient-table\"]/tbody/tr["+i+"]/td[3]")).getText();
+			if(!lastName.equals(searchString))
+			{
+				status = false;
+				break;
+			}
+		}		
+		return status;
+	}
+	
+	public Boolean verifyCreateNewPatient() throws Exception
+	{
+		Boolean status = null;
+		navigateToPage();
+		//fill out patient details
+		createNewPatient(util.patientId, util.patientLastname, util.patientFirstname, 
+						 util.patientMobile, util.patientEmail, util.patientDOB, util.patientAddress,
+						 util.patientCity, util.patientState, util.patientZipCode, util.patientDLNumber, util.clientName);
+		//verify new patient created
+		if(searchPatient(util.patientLastname).equals(true))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+			logger.error("Error : Unable to create new patient.");
+		}
+		return status;
+	}
+	
+	public Boolean verifyNewOrderBtnClick() throws Exception
+	{
+		Boolean status = true;
+		navigateToPage();
+		//search patient
+		searchBox().clear();
+		searchBox().sendKeys(util.patientFirstname);
+		//click new order btn
+		util.clickAfterExplicitWait(3000, "//a[contains(text(), \"New Order\")]");
+		util.sleep(3000);
+		
+		Set<String> windows = driver.getWindowHandles();
+		Iterator <String> it = windows.iterator();
+		
+		String parent = it.next();
+		System.out.println("patientWindow " + parent);
+		String child = it.next();
+		System.out.println("childWindow " + child);
+		util.sleep(3000);
+				
+		driver.switchTo().window(child);
+		util.sleep(3000);
+		
+		String exp_pageHeading = "Order";
+		System.out.println(exp_pageHeading);
+		String act_pageHeading = driver.findElement(By.xpath("//h1")).getText();
+		System.out.println(act_pageHeading);
+		if(act_pageHeading.equals(exp_pageHeading))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+		}
+		
+		driver.close();
+		util.sleep(3000);
+		driver.switchTo().window(parent);
+		util.sleep(3000);
+		return status;
+	}
+	
+	public Boolean verifyEditingPatientBtnClick() throws Exception
+	{
+		Boolean status = null;
+		navigateToPage();
+		//search patient
+		searchBox().clear();
+		searchBox().sendKeys(util.patientFirstname);
+		util.sleep(3000);
+		//click edit btn
+		editPatientBtn().click();
+		String exp_pageHeading = "Editing Patient: " + util.patientFirstname + " " + util.patientLastname;
+		System.out.println(exp_pageHeading);
+		String act_pageHeading = driver.findElement(By.xpath("//h1")).getText();
+		System.out.println(act_pageHeading);
+		if(act_pageHeading.equals(exp_pageHeading))
+		{
+			status = true;
+		}
+		else
+		{
+			status = false;
+			logger.error("Current page heading: " + act_pageHeading);
+			logger.error("Error : User could not navigate to Editing Patient page on clicking Editing Patient button in patients table.");
+		}
+		return status;
+	}
+		
+	public Boolean verifyFilterPatientRegistrationUsingDates() throws Exception
+	{
+		Boolean status = true;
+		navigateToPage();
+		//click advanced filtering button
+		advancedFilteringBtn().click();
+		util.sleep(3000);
+		
+		Date pastDate = util.setDate(-7);
+		String past_formatted = util.str_formattedDate(pastDate, "MM/dd/yyyy");
+		Date currentDate = util.getCurrentDate();
+		String current_formatted = util.str_formattedDate(currentDate, "MM/dd/yyyy");
+		
+		//enter registered from and to dates
+		util.jsRemoveReadOnlyAttribute(registeredFromDate());
+		registeredFromDate().clear();
+		registeredFromDate().sendKeys(past_formatted);
+		util.sleep(2000);
+		util.jsRemoveReadOnlyAttribute(registeredToDate());
+		registeredToDate().clear();
+		registeredToDate().sendKeys(current_formatted);
+		util.sleep(2000);
+		pageTitle().click();
+		util.selectByVisibleTextFromDropdown("All", filterByLocationDropdown());
+		util.sleep(2000);
+		
+		logger.info("Registered From Date: " + past_formatted);
+		logger.info("Registered To Date: " + current_formatted);
+		
+		//verify patient registry records were created between the given two dates
+		List<WebElement> patientsTable = driver.findElements(By.xpath("//table[@id='patient-table']/tbody/tr"));
+		for(int i=1; i<=patientsTable.size(); i++)
+		{
+			//click edit patient btn and navigate to editing patient page
+			util.clickAfterExplicitWait(2000, "//table[@id='patient-table']/tbody/tr["+i+"]/td[9]/a[1]");
+			//get the created date			
+			String createdDate = driver.findElement(By.xpath("//div[@class=\"patient-insurance-block\"]//following::table[2]/tbody/tr/td[3]")).getText();
+			//navigate back to manage patients page
+			navigateToPage();
+			//click advanced filtering button
+			advancedFilteringBtn().click();
+			util.sleep(3000);
+			//enter registered from and to dates
+			util.jsRemoveReadOnlyAttribute(registeredFromDate());
+			registeredFromDate().clear();
+			registeredFromDate().sendKeys(past_formatted);
+			util.sleep(2000);
+			util.jsRemoveReadOnlyAttribute(registeredToDate());
+			registeredToDate().clear();
+			registeredToDate().sendKeys(current_formatted);
+			util.sleep(2000);
+			pageTitle().click();
+			util.selectByVisibleTextFromDropdown("All", filterByLocationDropdown());
+			util.sleep(2000);
+			
+			String date = createdDate.substring(8, 10);
+			String month = createdDate.substring(5, 7);
+			String year = createdDate.substring(0, 4);
+			String str_date = month + "/" + date + "/" + year;
+			
+			Date dateEntry = util.convertDateToString(str_date, "MM/dd/yyyy");
+			
+			if (dateEntry.after(pastDate) && dateEntry.before(currentDate))
+			{
+				logger.info("Date entry: " + str_date);
+				logger.info("Patients registered within the date range are displayed on filtering using Registered from and Registered to dates.");
+			}
+			else if (str_date.equals(past_formatted))
+			{
+				logger.info("Date entry: " + str_date);
+				logger.info("Patients registered within the date range are displayed on filtering using Registered from and Registered to dates.");
+			}
+			else if (str_date.equals(current_formatted))
+			{
+				logger.info("Date entry: " + str_date);
+				logger.info("Patients registered within the date range are displayed on filtering using Registered from and Registered to dates.");
+			}
+			else
+			{
+				status = false;
+				logger.info("Date entry: " + str_date);
+				logger.error("Error : Patients registered within the date range not displayed on filtering using Registered from and Registered to dates.");
+				break;
+			}		
+		}	
+		return status;	
+	}
+	
+}

@@ -114,7 +114,8 @@ public class LoginPage extends TestBase{
 		else
 		{
 			status = false;
-			logger.error("Error : unable to login.");
+			logger.error("Current page URL: " + currentPageUrl);
+      		logger.error("Error : unable to login.");
 		}
 		return status;
 	}

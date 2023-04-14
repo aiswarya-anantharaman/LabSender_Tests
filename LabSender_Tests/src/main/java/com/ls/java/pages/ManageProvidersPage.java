@@ -258,6 +258,7 @@ public class ManageProvidersPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page title: " + currentPageTitle);
 			logger.info("Error : Unable to verify manage providers page title.");
 		}
 		return status;
@@ -570,6 +571,7 @@ public class ManageProvidersPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page title: " + util.getPageUrl());
 			logger.error("Error : Unable to navigate to Order Settings page on clicking Return to Order Settings button.");
 		}
 		return status;
@@ -616,6 +618,7 @@ public class ManageProvidersPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page title: " + util.getPageUrl());
 			logger.error("Error : Unable to navigate to Provider Edit page on clicking Edit Provider button.");
 		}	
 		//navigating from provider edit to manage providers page
@@ -1104,7 +1107,7 @@ public class ManageProvidersPage extends TestBase{
 		else
 		{
 			status = false;
-			
+			logger.error("Error : Error message not displayed for duplicate NPI.");			
 		}
 		//cleanup
 		deleteProvider(testNPI);

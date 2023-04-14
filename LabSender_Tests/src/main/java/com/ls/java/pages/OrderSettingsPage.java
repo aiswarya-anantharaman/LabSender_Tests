@@ -137,6 +137,7 @@ public class OrderSettingsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + currentPageUrl);
 			logger.error("Error : Unable to verify order settings page url.");
 		}
 		return status;
@@ -153,6 +154,7 @@ public class OrderSettingsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page title: " + currentPageTitle);
 			logger.error("Error : Unable to verify order settings page title.");
 		}
 		return status;
@@ -266,6 +268,7 @@ public class OrderSettingsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + currentPageUrl);
 			logger.error("Error : User could not navigate to Manage Providers page upon providers card click.");
 		}
 		navigateToPage();
@@ -284,6 +287,7 @@ public class OrderSettingsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + currentPageUrl);
 			logger.error("Error : User could not navigate to Manage Clients page upon clients card click.");
 		}
 		navigateToPage();
@@ -302,6 +306,7 @@ public class OrderSettingsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + currentPageUrl);
 			logger.error("Error : User could not navigate to Manage Locations page upon locations card click.");
 		}
 		navigateToPage();
@@ -320,6 +325,7 @@ public class OrderSettingsPage extends TestBase{
 		else
 		{
 			status = false;
+			logger.error("Current page URL: " + currentPageUrl);
 			logger.error("Error : User could not navigate to Manage Tests page upon tests card click.");
 		}
 		navigateToPage();
