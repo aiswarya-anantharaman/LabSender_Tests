@@ -93,7 +93,7 @@ public class ManageClientsPageTest extends TestBase{
 	public void createNewClient() throws Exception
 	{
 		String testID = util.randomID();
-		Boolean status = manageClients.verifyCreateNewClient("Automated Test Client", testID);
+		Boolean status = manageClients.verifyCreateNewClient(util.clientName, util.clientId);
 		Assert.assertEquals(true, status);
 	}
 	
@@ -102,7 +102,7 @@ public class ManageClientsPageTest extends TestBase{
 	public void verifySearchFunctionality() throws Exception
 	{
 		String testID = util.randomID();
-		Boolean status = manageClients.verifySearchFunctionality("Automated Test Client", testID);
+		Boolean status = manageClients.verifySearchFunctionality(util.clientName, util.clientId);
 		Assert.assertEquals(true, status);
 	}
 	
@@ -111,7 +111,7 @@ public class ManageClientsPageTest extends TestBase{
 	public void verifyDeleteClientFunctionality() throws Exception
 	{
 		String testID = util.randomID();
-		Boolean status = manageClients.verifyDeleteClientFunctionality("Automated Test Client", testID);
+		Boolean status = manageClients.verifyDeleteClientFunctionality(util.clientName, util.clientId);
 		Assert.assertEquals(true, status);
 	}
 	
@@ -120,7 +120,7 @@ public class ManageClientsPageTest extends TestBase{
 	public void clickEditClient() throws Exception
 	{
 		String testID = util.randomID();
-		Boolean status = manageClients.clickEditClient("Automated Test Client", testID);
+		Boolean status = manageClients.clickEditClient(util.clientName, util.clientId);
 		Assert.assertEquals(true, status);		
 	}
 		
@@ -128,8 +128,7 @@ public class ManageClientsPageTest extends TestBase{
 			description = "Verify page elements are rendered peoperly on the Editing Client page.")
 	public void pageElementsRenderedEditingClient() throws Exception
 	{
-		String testID = util.randomID();
-		Boolean status = manageClients.verifyPageElementsRenderedEditingClient("Automated Test Client", testID);
+		Boolean status = manageClients.verifyPageElementsRenderedEditingClient(util.clientName, util.clientId);
 		Assert.assertEquals(true, status);
 	}
 	
@@ -137,8 +136,7 @@ public class ManageClientsPageTest extends TestBase{
 			description = "Verify UI elements are rendered properly in Editing Client pane in Editing Client page.")
 	public void UIElementsEditingClientPane() throws Exception
 	{
-		String testID = util.randomID();
-		Boolean status = manageClients.verifyUIElementsEditingClientPane("Automated Test Client", testID);
+		Boolean status = manageClients.verifyUIElementsEditingClientPane(util.clientName, util.clientId);
 		Assert.assertEquals(true, status);
 	}
 	
@@ -146,8 +144,7 @@ public class ManageClientsPageTest extends TestBase{
 			description = "Verify client details are edited and rendered peoperly on Current Clients pane.")
 	public void editClientDetails() throws Exception
 	{
-		String testID = util.randomID();
-		Boolean status = manageClients.editClientDetails("Automated Test Client", testID);
+		Boolean status = manageClients.editClientDetails(util.clientName, util.clientId);
 		Assert.assertEquals(true, status);		
 	}
 

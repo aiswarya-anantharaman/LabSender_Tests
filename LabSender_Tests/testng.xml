@@ -10,7 +10,7 @@
 		<!--Change web page URL here-->
 		<parameter name="url" value="https://labsender.com/login" />
 		<!--Provide credentials here-->
-		<parameter name="username" value="aiswarya.anantharaman@healthcareintegrations.com" />
+		<parameter name="username" value="aiswarya.anantharaman+test@healthcareintegrations.com" />
 		<parameter name="password" value="tce9ztd!cbc5jgf8BAG" />
 		<classes>
 			<!--All @Test methods in the following classes will be executed upon test run-->
@@ -23,6 +23,7 @@
 			<class name="com.ls.test.testcases.NewOrderPageTest" />
 			<class name="com.ls.test.testcases.ViewOrdersPageTest" />-->
 			<class name="com.ls.test.testcases.ManagePatientsPageTest" />
+			<class name="com.ls.test.testcases.PreRegistrationPageTest" />
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

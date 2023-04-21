@@ -2,6 +2,10 @@ package com.ls.java.util;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -35,7 +39,7 @@ public class TestUtil extends TestBase{
 	public final String newOrderPageUrl = "labsender.com/lab/order";
 	public final String viewOrdersPageUrl = "labsender.com/lab/orders";
 	public final String managePatientsPageUrl = "labsender.com/lab/patients";
-	
+	public final String PreRegPageUrl = "labsender.com/lab/pages";
 	
 	//constants
 	
@@ -72,7 +76,8 @@ public class TestUtil extends TestBase{
 	public final String patientDLPath = projectPath + "/src/main/resources/TestData/patientDL.png";
 	public final String patientResultsPath = projectPath + "/src/main/resources/TestData/patientResults.pdf";
 	public final String patientDocumentPath = projectPath + "/src/main/resources/TestData/patientDocument.jpg";
-	
+	public final String clientLogoPath1 = projectPath + "/src/main/resources/TestData/SampleLogo1.png";
+	public final String clientLogoPath2 = projectPath + "/src/main/resources/TestData/SampleLogo2.png";
 	
 	Random random = new Random();  
 	
@@ -134,8 +139,8 @@ public class TestUtil extends TestBase{
 	{
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, noOfDays);
-		Date pastDate = calendar.getTime();		
-		return pastDate;		
+		Date setDate = calendar.getTime();		
+		return setDate;		
 	}
 	
 	public String str_formattedDate(Date date, String pattern) throws Exception
@@ -159,6 +164,12 @@ public class TestUtil extends TestBase{
 	public void jsRemoveReadOnlyAttribute(WebElement element) throws Exception
 	{
 		((JavascriptExecutor)driver).executeScript("arguments[0].removeAttribute('readonly')", element);
+	}
+	
+	public void waitUntilElementVisible(long duration, WebElement element) throws Exception
+	{
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(duration));
+		wait.until(ExpectedConditions.visibilityOfAllElements(element));
 	}
 
 }

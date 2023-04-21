@@ -591,7 +591,7 @@ public class ManageLocationsPage extends TestBase{
 			logger.error("Error : Unable to edit location details.");
 		}	
 		//cleanup
-		deleteLocation(location);		
+		deleteLocation(new_location);		
 		return status;
 	}
 	

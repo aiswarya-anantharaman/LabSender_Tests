@@ -34,7 +34,6 @@ public class TestBase {
 	{
 		String projectPath = System.getProperty("user.dir");
 		String downloadFilepath = projectPath + "downloads";
-		System.out.println(projectPath);
 		System.setProperty("webdriver.chrome.driver", projectPath + "/src/main/resources/Drivers/chromedriver.exe");
 		
 		ChromeOptions options = new ChromeOptions();
@@ -61,7 +60,7 @@ public class TestBase {
 		String screenshotsFolder = projectPath + "/test-output/Screenshots/";
 		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
         try {
-			FileUtils.copyFile(scrFile, new File(screenshotsFolder + "testName" + ".png"));
+			FileUtils.copyFile(scrFile, new File(screenshotsFolder + testName + ".png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -129,7 +129,6 @@ public class OrderSettingsPage extends TestBase{
 	{
 		Boolean status = null;
 		String currentPageUrl = util.getPageUrl();;
-		logger.error(currentPageUrl);
 		if(currentPageUrl.contains(util.orderSettingsPageUrl))
 		{
 			status = true;

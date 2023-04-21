@@ -27,7 +27,7 @@ public class LabDashboardPage extends TestBase{
 	public WebElement ordersBtnSideNav() throws Exception
 	{
 		try {
-			element = driver.findElement(By.xpath("//*[@id=\"wrapper\"]/ul/li[5]/a"));					
+			element = driver.findElement(By.xpath("//*[@id='wrapper']/ul/li[5]/a"));					
 		} catch (Exception e) {
 			logger.error("Error : Unable to locate Orders button in side nav.");
 		}
@@ -37,7 +37,7 @@ public class LabDashboardPage extends TestBase{
 	public WebElement orderSettingsSideNav() throws Exception
 	{
 		try {
-			element = driver.findElement(By.xpath("//*[@href=\"/lab/order_settings\"]"));					
+			element = driver.findElement(By.xpath("//*[@href='/lab/order_settings']"));					
 		} catch (Exception e) {
 			logger.error("Error : Unable to locate Order Settings under order button in side nav.");
 		}
@@ -47,7 +47,7 @@ public class LabDashboardPage extends TestBase{
 	public WebElement newOrderSideNav() throws Exception
 	{
 		try {
-			element = driver.findElement(By.xpath("//*[@href=\"/lab/order\"]"));					
+			element = driver.findElement(By.xpath("//*[@href='/lab/order']"));					
 		} catch (Exception e) {
 			logger.error("Error : Unable to locate New Order under order button in side nav.");
 		}
@@ -57,7 +57,7 @@ public class LabDashboardPage extends TestBase{
 	public WebElement viewOrdersSideNav() throws Exception
 	{
 		try {
-			element = driver.findElement(By.xpath("//*[@href=\"/lab/orders\"]"));					
+			element = driver.findElement(By.xpath("//*[@href='/lab/orders']"));					
 		} catch (Exception e) {
 			logger.error("Error : Unable to locate View Orders under order button in side nav.");
 		}
@@ -67,7 +67,17 @@ public class LabDashboardPage extends TestBase{
 	public WebElement managePatientsBtnSideNav() throws Exception
 	{
 		try {
-			element = driver.findElement(By.xpath("//*[@href=\"/lab/patients\"]"));					
+			element = driver.findElement(By.xpath("//*[@href='/lab/patients']"));					
+		} catch (Exception e) {
+			logger.error("Error : Unable to locate Manage Patients in side nav.");
+		}
+		return element;	
+	}
+	
+	public WebElement preRegPagesBtnSideNav() throws Exception
+	{
+		try {
+			element = driver.findElement(By.xpath("//*[@href='/lab/pages']"));					
 		} catch (Exception e) {
 			logger.error("Error : Unable to locate Manage Patients in side nav.");
 		}

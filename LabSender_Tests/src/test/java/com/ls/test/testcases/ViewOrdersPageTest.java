@@ -74,8 +74,7 @@ public class ViewOrdersPageTest extends TestBase{
 	}
 	
 	@Test(priority = 5, 
-			description = "Verify orders can be filtered using from and to dates in Orders table."
-			)
+			description = "Verify orders can be filtered using from and to dates in Orders table.")
 	public void filterOrdersUsingDates() throws Exception
 	{
 		Boolean status = viewOrders.verifyFilterOrdersUsingDates();
@@ -83,8 +82,7 @@ public class ViewOrdersPageTest extends TestBase{
 	}
 	
 	@Test(priority = 6, 
-			description = "Verify orders table is empty for invalid order from and order to dates."
-			)
+			description = "Verify orders table is empty for invalid order from and order to dates.")
 	public void filterOrdersUsingInvalidDates() throws Exception
 	{
 		Boolean status = viewOrders.verifyfilterOrdersUsingInvalidDates();

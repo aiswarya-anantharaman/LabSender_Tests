@@ -1,25 +1,32 @@
 package com.ls.test.testlisteners;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 import com.aventstack.extentreports.Status;
 import com.ls.java.base.TestBase;
+import com.ls.java.pages.PreCheck;
 import com.ls.java.util.ExtentSetup;
 
 
 public class Listeners extends TestBase implements ITestListener{
 
 	String projectPath = System.getProperty("user.dir");
-	String screenshotsFolder = projectPath + "/test-output/Screenshots/";
-	
+	String screenshotsFolder = projectPath + "\\test-output\\Screenshots\\";
+
+	PreCheck preCheck = new PreCheck();
+
+	private static final Logger logger = LogManager.getLogger(Listeners.class);
+
 	public Listeners() {
 
 	}
 	
 	public void onStart(ITestContext context) {
-		System.out.println("Started test execution : " + context.getName());
+		logger.info("Started test execution : " + context.getName());
 		//setup Extent Report
 		extent = ExtentSetup.setupExtentReport();
 	}
@@ -30,29 +37,31 @@ public class Listeners extends TestBase implements ITestListener{
 	}
 	
 	public void onTestSuccess(ITestResult result) {
-		System.out.println("Test passed : " + result.getName());
+		logger.info("Test passed : " + result.getName());
 		extentTest.log(testStatus(result), "Test passed : " + result.getMethod().getMethodName());
 	}
 	
 	public void onTestFailure(ITestResult result) {
-		System.out.println("Test failed : " + result.getName());
+		logger.info("Test failed : " + result.getName());
 		extentTest.log(testStatus(result), "Test failed : " + result.getMethod().getMethodName());
 		extentTest.log(testStatus(result),result.getThrowable().getMessage());
-		screenshot(result.getName());
-		extentTest.addScreenCaptureFromPath(screenshotsFolder + "testName" + ".png");
+		String testName = result.getMethod().getMethodName();
+		screenshot(testName);
+		extentTest.addScreenCaptureFromPath(screenshotsFolder + testName + ".png");
 	}
 	
 	public void onTestSkipped(ITestResult result) {
-		System.out.println("Test skipped : " + result.getName());	
+		logger.info("Test skipped : " + result.getName());	
 		extentTest.log(testStatus(result), "Test skipped : " + result.getMethod().getMethodName());
 		extentTest.log(testStatus(result), result.getSkipCausedBy().toString());
 		extentTest.log(testStatus(result), result.getThrowable().getMessage());
-		screenshot(result.getName());
-		extentTest.addScreenCaptureFromPath(screenshotsFolder + "testName" + ".png");
+		String testName = result.getMethod().getMethodName();
+		screenshot(testName);
+		extentTest.addScreenCaptureFromPath(screenshotsFolder + testName + ".png");
 	}
 	
 	public void onFinish(ITestContext context) {
-		System.out.println("Completed test execution : " + context.getName());
+		logger.info("Completed test execution : " + context.getName());
 		//close Extent Report
 		extent.flush();
 	}

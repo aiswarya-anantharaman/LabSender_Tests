@@ -1,12 +1,18 @@
 package com.ls.java.pages;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
@@ -405,7 +411,7 @@ public class ViewOrdersPage extends TestBase{
 		advancedFilteringBtn().click();
 		util.sleep(3000);
 		
-		Date pastDate = util.setDate(-30);
+		Date pastDate = util.setDate(-3);
 		String past_formatted = util.str_formattedDate(pastDate, "MM/dd/yyyy");
 		Date currentDate = util.getCurrentDate();
 		String current_formatted = util.str_formattedDate(currentDate, "MM/dd/yyyy");
@@ -463,9 +469,9 @@ public class ViewOrdersPage extends TestBase{
 		advancedFilteringBtn().click();
 		util.sleep(3000);
 
-		Date fromDate = util.getCurrentDate();
+		Date fromDate = util.setDate(7);
 		String fromDate_formatted = util.str_formattedDate(fromDate, "MM/dd/yyyy");
-		Date toDate = util.setDate(7);
+		Date toDate = util.setDate(14);
 		String toDate_formatted = util.str_formattedDate(toDate, "MM/dd/yyyy");
 		
 		//enter order from and to dates

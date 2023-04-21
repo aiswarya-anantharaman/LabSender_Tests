@@ -250,6 +250,8 @@ public class ManageProvidersPage extends TestBase{
 	public Boolean verifyPageTitle() throws Exception
 	{
 		Boolean status = null;
+		//navigate to manage providers
+		navigateToPage();
 		String currentPageTitle = pageTitle().getText();
 		if(currentPageTitle.contains(manageProvidersPageTitle()))
 		{
@@ -271,6 +273,8 @@ public class ManageProvidersPage extends TestBase{
 		Boolean createNewProviderPaneStatus = null;
 		Boolean uploadCSVPaneStatus = null;
 		Boolean returnToOSBtnStatus = null;
+		//navigate to manage providers
+		navigateToPage();
 		if(currentProvidersPane().isDisplayed() && currentProvidersPane().isEnabled())
 		{
 			currentProvidersPaneStatus = true;
@@ -326,6 +330,8 @@ public class ManageProvidersPage extends TestBase{
 		Boolean searchBoxStatus = null;
 		Boolean currentProvidersTableStatus = null;
 		Boolean paginationStatus = null;
+		//navigate to manage providers
+		navigateToPage();
 		if(showEntriesDropdown().isDisplayed() && showEntriesDropdown().isEnabled())
 		{
 			showEntriesDropdownStatus = true;
@@ -384,6 +390,8 @@ public class ManageProvidersPage extends TestBase{
 		Boolean phoneStatus = null;
 		Boolean emailStatus = null;
 		Boolean createBtnStatus = null;
+		//navigate to manage providers
+		navigateToPage();
 		if(providerIdBox().isDisplayed() && providerIdBox().isEnabled())
 		{
 			IdStatus = true;
@@ -478,6 +486,8 @@ public class ManageProvidersPage extends TestBase{
 	public Boolean verifyCreateNewProvider(String testID, String testNPI , String lname, String fname) throws Exception
 	{
 		Boolean status = null;
+		//navigate to manage providers
+		navigateToPage();
 		//create
 		createNewProvider(testID, testNPI, lname, fname);
 		//verify
@@ -523,6 +533,8 @@ public class ManageProvidersPage extends TestBase{
 		Boolean status = null;
 		Boolean validSearch = true;
 		Boolean invalidSearch = null;
+		//navigate to manage providers
+		navigateToPage();
 		//create new provider
 		createNewProvider(testID, testNPI, lname, fname);
 		//valid string search
@@ -563,6 +575,8 @@ public class ManageProvidersPage extends TestBase{
 	public Boolean clickReturnToOrderSettingBtn() throws Exception
 	{
 		Boolean status = null;
+		//navigate to manage providers
+		navigateToPage();
 		returnToOrderSettingsBtn().click();
 		if(util.getPageUrl().contains("lab/order_settings"))
 		{
@@ -580,6 +594,8 @@ public class ManageProvidersPage extends TestBase{
 	public Boolean verifyShowEntriesDropdownOptions() throws Exception
 	{
 		Boolean status = null;
+		//navigate to manage providers
+		navigateToPage();
 		ArrayList<String> options = new ArrayList<String>();
 		ArrayList<String> exp_options = new ArrayList<String>();
 		exp_options.add("10");
@@ -607,6 +623,8 @@ public class ManageProvidersPage extends TestBase{
 	public Boolean clickEditProvider() throws Exception
 	{
 		Boolean status = null;		
+		//navigate to manage providers
+		navigateToPage();
 		searchBox().clear();
 		searchBox().sendKeys("Provider");
 		WebElement editProviderBtn = driver.findElement(By.xpath("//*[@id=\"patient-table\"]/tbody/tr[1]/td[9]/a"));
@@ -632,6 +650,8 @@ public class ManageProvidersPage extends TestBase{
 		Boolean downloadTemplateBtnStatus = null;
 		Boolean chooseFileBtnStatus = null;
 		Boolean uploadBtnStatus = null;
+		//navigate to manage providers
+		navigateToPage();
 		if(downloadCSVTemplateBtn().isDisplayed() && downloadCSVTemplateBtn().isEnabled())
 		{
 			downloadTemplateBtnStatus = true;
@@ -673,6 +693,8 @@ public class ManageProvidersPage extends TestBase{
 	public Boolean updateProviderDetails(String testID, String testNPI , String lname, String fname) throws Exception
 	{
 		Boolean status = null;	
+		//navigate to manage providers
+		navigateToPage();
 		//create new provider
 		createNewProvider(testID, testNPI, lname, fname);
 		//search provider using unique NPI
@@ -709,6 +731,8 @@ public class ManageProvidersPage extends TestBase{
 		Boolean alertDisplayed = null;
 		Boolean clickCancel = null;
 		Boolean clickOk = null;
+		//navigate to manage providers
+		navigateToPage();
 		//create new provider
 		createNewProvider(testID, testNPI, lname, fname);
 		//search provider using unique NPI
@@ -815,6 +839,8 @@ public class ManageProvidersPage extends TestBase{
 		Boolean clientsAssignedPaneStatus = null;
 		Boolean uploadProviderSignPaneStatus = null;
 		Boolean AssignNewClientsPaneStatus = null;
+		//navigate to manage providers
+		navigateToPage();
 		//create new provider
 		createNewProvider(testID, testNPI, lname, fname);
 		//search provider using unique NPI
@@ -892,6 +918,8 @@ public class ManageProvidersPage extends TestBase{
 		Boolean notifyProviderCheckboxStatus = null;
 		Boolean submitBtnStatus = null;
 		Boolean removeProviderStatus = null;
+		//navigate to manage providers
+		navigateToPage();
 		//create new provider
 		createNewProvider(testID, testNPI, lname, fname);
 		//search provider using unique NPI
@@ -1052,6 +1080,8 @@ public class ManageProvidersPage extends TestBase{
 		Boolean status = null;
 		Boolean chooseFileBtnStatus = null;
 		Boolean submitBtnStatus = null;
+		//navigate to manage providers
+		navigateToPage();
 		//create new provider
 		createNewProvider(testID, testNPI, lname, fname);
 		//search provider using unique NPI
@@ -1096,6 +1126,8 @@ public class ManageProvidersPage extends TestBase{
 	public Boolean createProviderWithDuplicateNPI(String testID, String testNPI , String lname, String fname) throws Exception
 	{
 		Boolean status = null;
+		//navigate to manage providers
+		navigateToPage();
 		//create new provider
 		createNewProvider(testID, testNPI, lname, fname);
 		//create new provider with same NPI, but different data
@@ -1111,6 +1143,25 @@ public class ManageProvidersPage extends TestBase{
 		}
 		//cleanup
 		deleteProvider(testNPI);
+		return status;
+	}
+	
+	public Boolean checkAutomatedProviderExists() throws Exception
+	{
+		Boolean status = null;
+		//navigate to manage providers
+		navigateToPage();
+		//verify if automated provider data already exists
+		if(searchProvider(util.providerNPI).equals(true))
+		{
+			status = false;
+			logger.error("ERROR : AUTOMATED DATA ALREADY AVAILABLE, PLEASE CLEAR!!");
+		}
+		else
+		{
+			status = true;
+			logger.info("Ready for Automation Test Execution.");
+		}
 		return status;
 	}
 }

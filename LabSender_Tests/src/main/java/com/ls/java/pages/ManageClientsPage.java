@@ -942,7 +942,9 @@ public class ManageClientsPage extends TestBase{
 		util.selectByVisibleTextFromDropdown(testName, editClient.ec_defaultTestDropdown());		
 		//click update btn
 		util.clickAfterExplicitWait(4000, "//button[@type=\"submit\" and contains(text(), \"Update\")]");
-		logger.info("Client details updated for " + clientId + " - added default provider and default test");
+		logger.info("Client details updated for " + clientId + 
+				" - added default provider" + " : " + provider + 
+				"and default test" + " : " + testName);
 	}
 	
 	public Boolean verifyPageElementsRenderedEditingClient(String clientName, String clientId) throws Exception
